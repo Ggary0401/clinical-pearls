@@ -11,6 +11,7 @@ import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSy
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS_DIR = join(ROOT, 'posts');
@@ -205,6 +206,18 @@ function renderMarkdown(md) {
   return out.join('\n');
 }
 
+/* ------------------------------------------------------------------ 資產版本 */
+
+// 以檔案內容雜湊當版本號，確保改版後瀏覽器不可能吃到舊快取
+const ASSETS = { css: '0', js: '0' };
+function hashAssets() {
+  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js']]) {
+    try {
+      ASSETS[key] = createHash('sha256').update(readFileSync(join(ASSETS_DIR, file))).digest('hex').slice(0, 8);
+    } catch { /* 檔案不存在就維持預設 */ }
+  }
+}
+
 /* ------------------------------------------------------------------ 版型 */
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -230,7 +243,7 @@ function head(title, description, canonicalPath) {
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 ${FONTS}
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v=${ASSETS.css}">
 </head>`;
 }
 
@@ -365,7 +378,7 @@ ${cards}
 
 </main>
 ${footer()}
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
 </body>
 </html>
 `;
@@ -400,7 +413,7 @@ ${p.html}
 
 </main>
 ${footer()}
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
 </body>
 </html>
 `;
@@ -413,6 +426,8 @@ function build() {
     console.error('找不到 posts/ 目錄');
     process.exit(1);
   }
+
+  hashAssets();
 
   rmSync(OUT_DIR, { recursive: true, force: true });
   mkdirSync(join(OUT_DIR, 'assets'), { recursive: true });
@@ -458,6 +473,14 @@ function build() {
     .join('\n');
   writeFileSync(join(OUT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, 'utf8');
   writeFileSync(join(OUT_DIR, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`, 'utf8');
+
+  // 快取規則：HTML 每次重新驗證（改版立即生效）；
+  // 資產網址帶內容雜湊，所以可以長期快取。後面的規則覆蓋前面的。
+  writeFileSync(
+    join(OUT_DIR, '_headers'),
+    ['/*', '  Cache-Control: public, max-age=0, must-revalidate', '', '/assets/*', '  Cache-Control: public, max-age=31536000, immutable', ''].join('\n'),
+    'utf8'
+  );
 
   console.log(`建置完成：${posts.length} 篇文章 -> public/`);
   for (const p of posts) console.log(`  /${p.slug}  發布 ${fmtDate(p.date)}  更新 ${fmtDate(p.updated)}  ${p.title}`);
