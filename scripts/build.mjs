@@ -346,14 +346,6 @@ function footer() {
 </footer>`;
 }
 
-/** 全出血寬字距圖帶（參考站的 SHIZUOKA CITY DENTAL CLINIC 那一段） */
-function wordBand() {
-  return `<section class="band" aria-hidden="true">
-  <img src="${escAttr(heroPath())}" alt="" loading="lazy">
-  <p class="band-text">KYLIN&#39;S NOTE</p>
-</section>`;
-}
-
 function metaRow(p) {
   return `<p class="meta">
       <span class="byline">${esc(p.author)}</span>
@@ -442,7 +434,6 @@ ${cards}
     </div>
   </section>
 
-  ${wordBand()}
 
 </main>
 ${footer()}
