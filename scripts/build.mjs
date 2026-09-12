@@ -35,6 +35,9 @@ const SITE = {
       '中國醫藥大學醫學系畢業',
     ],
     experience: [
+      '昕澄診所總院長',
+      '康澄診所總院長',
+      '沐澄診所總院長',
       '鹿基大腸直腸外科主任',
       '彰基大腸直腸外科主治醫師',
       '彰基外傷急診主治醫師',
@@ -224,9 +227,9 @@ function renderMarkdown(md) {
 /* ------------------------------------------------------------------ 資產版本 */
 
 // 以檔案內容雜湊當版本號，確保改版後瀏覽器不可能吃到舊快取
-const ASSETS = { css: '0', js: '0' };
+const ASSETS = { css: '0', js: '0', portrait: '0' };
 function hashAssets() {
-  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js']]) {
+  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js'], ['portrait', 'portrait.jpg']]) {
     try {
       ASSETS[key] = createHash('sha256').update(readFileSync(join(ASSETS_DIR, file))).digest('hex').slice(0, 8);
     } catch { /* 檔案不存在就維持預設 */ }
@@ -384,8 +387,13 @@ ${siteHeader()}
     <div class="wrap about-grid">
       ${sectionTitle('ABOUT', '關於我')}
       <div class="about-body">
-        ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
-        ${cvGroup('經歷', 'EXPERIENCE', SITE.cv.experience)}
+        <figure class="portrait">
+          <img src="/assets/portrait.jpg?v=${ASSETS.portrait}" width="675" height="900" alt="${escAttr(SITE.author)}" loading="lazy">
+        </figure>
+        <div class="cv">
+          ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
+          ${cvGroup('經歷', 'EXPERIENCE', SITE.cv.experience)}
+        </div>
       </div>
     </div>
   </section>
