@@ -1,0 +1,9 @@
+name = "clinical-pearls"
+compatibility_date = "2026-09-12"
+pages_build_output_dir = "public"
+
+# 瀏覽計數器的儲存空間。
+# Pages 會在部署時自動套用這個 binding，不必再去 dashboard 手動設定。
+[[kv_namespaces]]
+binding = "VIEWS"
+id = "787d7286b36542d4839e259d3a14eb7c"

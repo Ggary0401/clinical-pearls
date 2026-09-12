@@ -8,3 +8,7 @@ npm-debug.log*
 # Env
 .env
 .env.local
+
+# 本機開發設定
+.claude/
+.wrangler/

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>筆記的排版格式（範本） · Clinical Pearls</title>
+<meta name="description" content="這篇同時是格式說明與範本——列出寫筆記時可以用的排版元素，新增文章時複製這個檔案改寫即可。">
+<meta name="author" content="林耿億醫師">
+<meta property="og:title" content="筆記的排版格式（範本） · Clinical Pearls">
+<meta property="og:description" content="這篇同時是格式說明與範本——列出寫筆記時可以用的排版元素，新增文章時複製這個檔案改寫即可。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body data-slug="20260905-writing-format">
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <p class="brand"><a href="/">Clinical Pearls</a></p>
+    <p class="tagline">林耿億醫師的醫療筆記</p>
+  </div>
+</header>
+<main id="main" class="wrap">
+  <article class="post">
+    <figure class="hero">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" width="1280" height="853" alt="一位醫師手持聽診器" fetchpriority="high">
+</figure>
+    <h1>筆記的排版格式（範本）</h1>
+    <p class="post-meta">
+      <span class="byline">林耿億醫師</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <time datetime="2026-09-05">發布 2026-09-05</time>
+      <span class="sep" aria-hidden="true">·</span>
+      <time datetime="2026-09-12">更新 2026-09-12</time>
+      <span class="sep sep-views" aria-hidden="true">·</span>
+      <span class="views"><span data-views="20260905-writing-format">—</span> 次瀏覽</span>
+    </p>
+    <div class="post-body">
+<p>每篇筆記都是 <code>posts/</code> 目錄下的一個 Markdown 檔案，檔名就是網址。這篇示範所有支援的排版元素，新增文章時直接複製本檔改寫最快。</p>
+<h2>檔名與網址</h2>
+<p>檔名格式為 <code>YYYYMMDD-英文短名.md</code>，例如本檔為 <code>20260905-writing-format.md</code>，對應網址即 <code>/20260905-writing-format</code>。</p>
+<h2>檔頭欄位</h2>
+<p>每個檔案開頭要有一段 front matter：</p>
+<pre><code>---
+title: 文章標題
+date: 2026-09-05
+author: 林耿億醫師
+summary: 首頁卡片上顯示的一兩句摘要。
+---</code></pre>
+<p><code>date</code> 是發布日；<strong>更新日不用自己寫</strong>，建置時會依 git 紀錄自動判定。</p>
+<h2>可用的排版元素</h2>
+<h3>強調與行內標記</h3>
+<p>可以用<strong>粗體</strong>標出重點，用<em>斜體</em>表示術語或書名，用 <code>行內程式碼</code> 標示劑量單位、檢驗代號這類需要精確呈現的字串。</p>
+<h3>清單</h3>
+<p>無序清單適合平行的項目：</p>
+<ul><li>第一項</li><li>第二項</li><li>第三項</li></ul>
+<p>有序清單適合有先後的步驟：</p>
+<ol><li>先做這個</li><li>再做那個</li><li>最後確認</li></ol>
+<h3>表格</h3>
+<p>表格在手機上會自動變成可左右滑動，不會擠壓變形：</p>
+<div class="table-wrap"><table><thead><tr><th>項目</th><th>說明</th><th>備註</th></tr></thead><tbody><tr><td>欄位一</td><td>這是第一欄的說明文字</td><td>可留空</td></tr><tr><td>欄位二</td><td>這是第二欄的說明文字</td><td>—</td></tr><tr><td>欄位三</td><td>較長的內容也不會破格，會自動換行處理</td><td>見下方</td></tr></tbody></table></div>
+<h3>引用</h3>
+<blockquote><p>引用區塊適合放指引原文、定義，或是需要與正文區隔的提醒。</p>
+<p>可以有多個段落。</p></blockquote>
+<h3>程式碼區塊</h3>
+<p>超出寬度時會自己出現橫向捲軸，不會把版面撐破：</p>
+<pre><code class="language-bash">npm run build        # 重新產生 public/ 底下的靜態檔案
+git add -A &amp;&amp; git commit -m &quot;新增筆記&quot;
+git push             # 推上去後 Cloudflare Pages 會自動部署</code></pre>
+<h3>連結</h3>
+<p>站內連結這樣寫：<a href="/20260912-introduction">回到開站說明</a>。站外連結會自動在新分頁開啟，例如 <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>。</p>
+<h3>分隔線</h3>
+<p>三個減號可以畫一條分隔線：</p>
+<hr>
+<h2>新增一篇筆記的完整流程</h2>
+<ol><li>在 <code>posts/</code> 建立新的 <code>.md</code> 檔，檔名用 <code>YYYYMMDD-短名.md</code></li><li>填好 front matter 的 <code>title</code>、<code>date</code>、<code>summary</code></li><li>寫內容</li><li>執行 <code>npm run build</code>，確認終端機列出的文章清單正確</li><li><code>git add -A &amp;&amp; git commit &amp;&amp; git push</code></li></ol>
+<p>推上去之後，Cloudflare Pages 會自動重新建置並上線，首頁卡片會多一張，排序自動把最新的放前面。</p>
+    </div>
+  </article>
+  <p class="back"><a href="/">← 回到全部筆記</a></p>
+</main>
+<footer class="site-footer">
+  <p class="credit">
+    HERO 圖片：<a href="https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg" target="_blank" rel="noopener noreferrer">The Stethoscope, Peru</a>
+    by Alex Proimos，取自 Wikimedia Commons，授權
+    <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>。
+  </p>
+  <p class="disclaimer">本站為 林耿億醫師 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
+  <p class="copyright">© 2026 林耿億醫師 · Clinical Pearls</p>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

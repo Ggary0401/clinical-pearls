@@ -1,0 +1,387 @@
+#!/usr/bin/env node
+// 靜態部落格建置腳本（零外部依賴）
+// posts/*.md  ->  public/<slug>/index.html  +  public/index.html
+//
+// 設計重點：
+//  - 首頁文章列表直接寫進 HTML（不靠 JavaScript 讀 JSON），利於 SEO
+//  - 每篇文章的「更新日期」由 git 自動判定；有未提交的修改則視為今天
+//  - 卡片依更新日期排序，最新的在前
+
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
+import { join, dirname, basename } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const POSTS_DIR = join(ROOT, 'posts');
+const ASSETS_DIR = join(ROOT, 'assets');
+const OUT_DIR = join(ROOT, 'public');
+
+/* ------------------------------------------------------------------ 站台設定 */
+
+const SITE = {
+  title: 'Clinical Pearls',
+  subtitle: '林耿億醫師的醫療筆記',
+  author: '林耿億醫師',
+  description: '林耿億醫師的臨床筆記與心得整理。',
+  lang: 'zh-Hant-TW',
+  // HERO 圖片（CC BY 2.0，出處標示於 footer）
+  hero: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
+    width: 1280,
+    height: 853,
+    alt: '一位醫師手持聽診器',
+    workTitle: 'The Stethoscope, Peru',
+    workUrl: 'https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg',
+    creator: 'Alex Proimos',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+    sourceName: 'Wikimedia Commons',
+  },
+};
+
+/* ------------------------------------------------------------------ 小工具 */
+
+const esc = (s = '') =>
+  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const escAttr = esc;
+
+function todayISO() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+function git(args) {
+  try {
+    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return '';
+  }
+}
+
+/** 文章「最後更新日」：有未提交的改動 -> 今天；否則取該檔最後一次 commit 日期 */
+function resolveUpdated(relPath, fm) {
+  const dirty = git(['status', '--porcelain', '--', relPath]);
+  if (dirty) return todayISO();
+  const committed = git(['log', '-1', '--format=%cs', '--', relPath]);
+  if (committed) return committed;
+  return fm.updated || fm.date || todayISO();
+}
+
+/** 以 YYYY-MM-DD 呈現 */
+const fmtDate = (iso) => (iso || '').slice(0, 10);
+
+/* ------------------------------------------------------------------ Front matter */
+
+function parseFrontMatter(raw) {
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) return { data: {}, body: raw };
+  const data = {};
+  for (const line of m[1].split(/\r?\n/)) {
+    const kv = line.match(/^([A-Za-z_][\w-]*)\s*:\s*(.*)$/);
+    if (!kv) continue;
+    let v = kv[2].trim();
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
+    data[kv[1]] = v;
+  }
+  return { data, body: raw.slice(m[0].length) };
+}
+
+/* ------------------------------------------------------------------ Markdown */
+
+function inline(text) {
+  // 先切出 `code`，避免行內語法污染程式碼
+  const parts = String(text).split(/(`[^`]+`)/g);
+  return parts
+    .map((part) => {
+      if (part.startsWith('`') && part.endsWith('`') && part.length > 1) {
+        return `<code>${esc(part.slice(1, -1))}</code>`;
+      }
+      let s = esc(part);
+      s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => `<img src="${escAttr(src)}" alt="${escAttr(alt)}" loading="lazy">`);
+      s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => {
+        const ext = /^https?:\/\//.test(href);
+        const rel = ext ? ' target="_blank" rel="noopener noreferrer"' : '';
+        return `<a href="${escAttr(href)}"${rel}>${t}</a>`;
+      });
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      return s;
+    })
+    .join('');
+}
+
+function renderMarkdown(md) {
+  const lines = String(md).replace(/\r\n/g, '\n').split('\n');
+  const out = [];
+  let i = 0;
+
+  const isTableSep = (l) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
+  const cells = (l) => l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map((c) => c.trim());
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (!line.trim()) { i++; continue; }
+
+    // 程式碼區塊
+    if (/^```/.test(line)) {
+      const lang = line.slice(3).trim();
+      const buf = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]);
+      i++;
+      const cls = lang ? ` class="language-${escAttr(lang)}"` : '';
+      out.push(`<pre><code${cls}>${esc(buf.join('\n'))}</code></pre>`);
+      continue;
+    }
+
+    // 分隔線
+    if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
+
+    // 標題（文章正文用 h2 起，h1 保留給文章標題）
+    const h = line.match(/^(#{1,6})\s+(.*)$/);
+    if (h) {
+      const lvl = Math.min(Math.max(h[1].length, 2), 4);
+      out.push(`<h${lvl}>${inline(h[2].trim())}</h${lvl}>`);
+      i++;
+      continue;
+    }
+
+    // 表格
+    if (/^\s*\|/.test(line) && i + 1 < lines.length && isTableSep(lines[i + 1])) {
+      const head = cells(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /^\s*\|/.test(lines[i])) rows.push(cells(lines[i++]));
+      out.push(
+        `<div class="table-wrap"><table><thead><tr>${head.map((c) => `<th>${inline(c)}</th>`).join('')}</tr></thead>` +
+          `<tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`
+      );
+      continue;
+    }
+
+    // 引用
+    if (/^\s*>\s?/.test(line)) {
+      const buf = [];
+      while (i < lines.length && /^\s*>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^\s*>\s?/, ''));
+      out.push(`<blockquote>${renderMarkdown(buf.join('\n'))}</blockquote>`);
+      continue;
+    }
+
+    // 清單
+    const ul = /^\s*[-*+]\s+/;
+    const ol = /^\s*\d+\.\s+/;
+    if (ul.test(line) || ol.test(line)) {
+      const ordered = ol.test(line);
+      const re = ordered ? ol : ul;
+      const items = [];
+      while (i < lines.length && re.test(lines[i])) items.push(lines[i++].replace(re, ''));
+      const tag = ordered ? 'ol' : 'ul';
+      out.push(`<${tag}>${items.map((t) => `<li>${inline(t)}</li>`).join('')}</${tag}>`);
+      continue;
+    }
+
+    // 段落
+    const buf = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !/^```/.test(lines[i]) &&
+      !/^(#{1,6})\s/.test(lines[i]) &&
+      !/^\s*>\s?/.test(lines[i]) &&
+      !ul.test(lines[i]) &&
+      !ol.test(lines[i]) &&
+      !/^\s*\|/.test(lines[i]) &&
+      !/^\s*(-{3,}|\*{3,})\s*$/.test(lines[i])
+    ) buf.push(lines[i++]);
+    if (buf.length) out.push(`<p>${inline(buf.join(' '))}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+/* ------------------------------------------------------------------ 版型 */
+
+function head(title, description, canonicalPath) {
+  return `<!DOCTYPE html>
+<html lang="${SITE.lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${escAttr(description)}">
+<meta name="author" content="${escAttr(SITE.author)}">
+<meta property="og:title" content="${escAttr(title)}">
+<meta property="og:description" content="${escAttr(description)}">
+<meta property="og:type" content="${canonicalPath === '/' ? 'website' : 'article'}">
+<meta property="og:image" content="${escAttr(SITE.hero.src)}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<link rel="stylesheet" href="/assets/style.css">
+</head>`;
+}
+
+function heroFigure() {
+  const h = SITE.hero;
+  return `<figure class="hero">
+  <img src="${escAttr(h.src)}" width="${h.width}" height="${h.height}" alt="${escAttr(h.alt)}" fetchpriority="high">
+</figure>`;
+}
+
+function footer() {
+  const h = SITE.hero;
+  return `<footer class="site-footer">
+  <p class="credit">
+    HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
+    by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
+    <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
+  </p>
+  <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
+  <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
+</footer>`;
+}
+
+function renderIndex(posts) {
+  const cards = posts
+    .map(
+      (p) => `      <li class="card">
+        <article>
+          <h2 class="card-title"><a href="/${escAttr(p.slug)}">${esc(p.title)}</a></h2>
+          <p class="card-summary">${esc(p.summary)}</p>
+          <p class="card-meta">
+            <span class="byline">${esc(p.author)}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <time datetime="${escAttr(p.date)}">發布 ${fmtDate(p.date)}</time>
+            <span class="sep" aria-hidden="true">·</span>
+            <time datetime="${escAttr(p.updated)}">更新 ${fmtDate(p.updated)}</time>
+            <span class="sep sep-views" aria-hidden="true">·</span>
+            <span class="views"><span data-views="${escAttr(p.slug)}">—</span> 次瀏覽</span>
+          </p>
+        </article>
+      </li>`
+    )
+    .join('\n');
+
+  return `${head(`${SITE.title} · ${SITE.subtitle}`, SITE.description, '/')}
+<body>
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <p class="brand"><a href="/">${esc(SITE.title)}</a></p>
+    <p class="tagline">${esc(SITE.subtitle)}</p>
+  </div>
+</header>
+<main id="main" class="wrap">
+  ${heroFigure()}
+  <section class="intro">
+    <h1>${esc(SITE.subtitle)}</h1>
+    <p>${esc(SITE.description)}</p>
+  </section>
+  <section class="listing" aria-label="文章列表">
+    <h2 class="listing-title">全部筆記 <span class="count">（${posts.length} 篇）</span></h2>
+    <ul class="cards">
+${cards}
+    </ul>
+  </section>
+</main>
+<div class="wrap">${footer()}</div>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
+`;
+}
+
+function renderPost(p) {
+  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`)}
+<body data-slug="${escAttr(p.slug)}">
+<a class="skip" href="#main">跳至主要內容</a>
+<header class="site-header">
+  <div class="wrap">
+    <p class="brand"><a href="/">${esc(SITE.title)}</a></p>
+    <p class="tagline">${esc(SITE.subtitle)}</p>
+  </div>
+</header>
+<main id="main" class="wrap">
+  <article class="post">
+    ${heroFigure()}
+    <h1>${esc(p.title)}</h1>
+    <p class="post-meta">
+      <span class="byline">${esc(p.author)}</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <time datetime="${escAttr(p.date)}">發布 ${fmtDate(p.date)}</time>
+      <span class="sep" aria-hidden="true">·</span>
+      <time datetime="${escAttr(p.updated)}">更新 ${fmtDate(p.updated)}</time>
+      <span class="sep sep-views" aria-hidden="true">·</span>
+      <span class="views"><span data-views="${escAttr(p.slug)}">—</span> 次瀏覽</span>
+    </p>
+    <div class="post-body">
+${p.html}
+    </div>
+  </article>
+  <p class="back"><a href="/">← 回到全部筆記</a></p>
+</main>
+${footer()}
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
+`;
+}
+
+/* ------------------------------------------------------------------ 主流程 */
+
+function build() {
+  if (!existsSync(POSTS_DIR)) {
+    console.error('找不到 posts/ 目錄');
+    process.exit(1);
+  }
+
+  rmSync(OUT_DIR, { recursive: true, force: true });
+  mkdirSync(join(OUT_DIR, 'assets'), { recursive: true });
+
+  const files = readdirSync(POSTS_DIR).filter((f) => f.endsWith('.md')).sort();
+  const posts = files.map((file) => {
+    const slug = basename(file, '.md');
+    const raw = readFileSync(join(POSTS_DIR, file), 'utf8');
+    const { data, body } = parseFrontMatter(raw);
+    const updated = resolveUpdated(`posts/${file}`, data);
+    return {
+      slug,
+      title: data.title || slug,
+      author: data.author || SITE.author,
+      summary: data.summary || '',
+      date: data.date || updated,
+      updated,
+      html: renderMarkdown(body),
+    };
+  });
+
+  // 最新的在前：先比更新日，再比發布日
+  posts.sort((a, b) => (b.updated.localeCompare(a.updated)) || (b.date.localeCompare(a.date)) || b.slug.localeCompare(a.slug));
+
+  for (const p of posts) {
+    const dir = join(OUT_DIR, p.slug);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'index.html'), renderPost(p), 'utf8');
+  }
+
+  writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(posts), 'utf8');
+
+  for (const f of readdirSync(ASSETS_DIR)) copyFileSync(join(ASSETS_DIR, f), join(OUT_DIR, 'assets', f));
+
+  // sitemap / robots（SEO 小加分）
+  const origin = process.env.SITE_ORIGIN || '';
+  if (origin) {
+    const urls = ['/', ...posts.map((p) => `/${p.slug}`)]
+      .map((u) => `  <url><loc>${origin}${u}</loc><lastmod>${u === '/' ? todayISO() : posts.find((p) => `/${p.slug}` === u).updated}</lastmod></url>`)
+      .join('\n');
+    writeFileSync(join(OUT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, 'utf8');
+    writeFileSync(join(OUT_DIR, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`, 'utf8');
+  }
+
+  console.log(`建置完成：${posts.length} 篇文章 -> public/`);
+  for (const p of posts) console.log(`  /${p.slug}  發布 ${fmtDate(p.date)}  更新 ${fmtDate(p.updated)}  ${p.title}`);
+}
+
+build();

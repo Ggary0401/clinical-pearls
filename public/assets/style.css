@@ -1,0 +1,279 @@
+/* Clinical Pearls — 林耿億醫師的醫療筆記
+   手機優先、單一內容欄寬、任何元素都不得超出視窗（防破格） */
+
+:root {
+  --content: 44rem;          /* 內容文字區寬度，圖片不得超過 */
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --text: #1d2327;
+  --muted: #5c6670;
+  --line: #e3e0da;
+  --accent: #0b6b5e;
+  --accent-soft: #e6f1ef;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(29, 35, 39, .06), 0 4px 16px rgba(29, 35, 39, .05);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14181b;
+    --surface: #1b2024;
+    --text: #e8eaec;
+    --muted: #9aa4ad;
+    --line: #2b3238;
+    --accent: #5ec7b5;
+    --accent-soft: #16302c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Serif TC", "Songti TC", Georgia, "Times New Roman", serif;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  /* 防破格：長網址、長英文字串一律斷行 */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--accent); color: #fff; padding: .6rem 1rem; border-radius: 0 0 var(--radius) 0;
+}
+.skip:focus { left: 0; top: 0; z-index: 10; }
+
+/* 版心：左右留白，永遠不會頂到螢幕邊 */
+.wrap {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  padding-block: 1rem;
+  margin-bottom: 2rem;
+}
+.site-header .brand {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: .02em;
+}
+.site-header .brand a { color: var(--text); text-decoration: none; }
+.site-header .tagline {
+  margin: .15rem 0 0;
+  color: var(--muted);
+  font-size: .875rem;
+  font-family: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+/* ---------------------------------------------------------------- HERO */
+
+.hero {
+  margin: 0 0 2rem;
+  /* 寬度不超過內容文字區；等比例縮放由 aspect-ratio + height:auto 保證 */
+  max-width: 100%;
+}
+.hero img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1280 / 853;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--accent-soft);
+}
+
+/* ---------------------------------------------------------------- 首頁 */
+
+.intro { margin-bottom: 2.5rem; }
+.intro h1 {
+  font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+  line-height: 1.35;
+  margin: 0 0 .5rem;
+  letter-spacing: .01em;
+}
+.intro p { margin: 0; color: var(--muted); }
+
+.listing-title {
+  font-size: 1rem;
+  font-family: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--line);
+}
+.listing-title .count { text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.card-title { margin: 0 0 .4rem; font-size: 1.2rem; line-height: 1.45; }
+.card-title a { color: var(--text); text-decoration: none; }
+.card-title a:hover { color: var(--accent); text-decoration: underline; }
+.card-summary { margin: 0 0 .75rem; color: var(--muted); font-size: .975rem; }
+
+/* ---------------------------------------------------------------- meta 列 */
+
+.card-meta, .post-meta {
+  margin: 0;
+  font-family: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: .8125rem;
+  line-height: 1.9;
+  color: var(--muted);
+  /* 窄螢幕自動換行，不會擠爆 */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 .5rem;
+  align-items: baseline;
+}
+.card-meta .byline, .post-meta .byline { color: var(--text); font-weight: 600; }
+.card-meta .sep, .post-meta .sep { opacity: .45; }
+.post-meta {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------- 文章 */
+
+.post h1 {
+  font-size: clamp(1.65rem, 6vw, 2.25rem);
+  line-height: 1.35;
+  margin: 0 0 .6rem;
+  letter-spacing: .01em;
+}
+.post-body > :first-child { margin-top: 0; }
+.post-body h2 {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  margin: 2.4rem 0 .8rem;
+  padding-left: .65rem;
+  border-left: 3px solid var(--accent);
+}
+.post-body h3 { font-size: 1.12rem; margin: 1.9rem 0 .6rem; }
+.post-body h4 { font-size: 1rem; margin: 1.5rem 0 .5rem; color: var(--muted); }
+.post-body p { margin: 0 0 1.15rem; }
+.post-body ul, .post-body ol { margin: 0 0 1.15rem; padding-left: 1.4rem; }
+.post-body li { margin-bottom: .35rem; }
+
+.post-body blockquote {
+  margin: 1.5rem 0;
+  padding: .85rem 1.1rem;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.post-body blockquote > :last-child { margin-bottom: 0; }
+
+.post-body hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
+
+.post-body img {
+  border-radius: var(--radius);
+  margin: 1.5rem 0;
+  max-width: 100%;
+}
+
+/* 程式碼：橫向捲動，絕不撐破版面 */
+.post-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .875em;
+  background: var(--accent-soft);
+  padding: .12em .38em;
+  border-radius: 4px;
+}
+.post-body pre {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.post-body pre code { background: none; padding: 0; font-size: .8125rem; line-height: 1.7; }
+
+/* 表格：包一層捲動容器，窄螢幕不破格 */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; }
+.post-body table { border-collapse: collapse; width: 100%; min-width: 22rem; font-size: .9375rem; }
+.post-body th, .post-body td { border: 1px solid var(--line); padding: .55rem .75rem; text-align: left; }
+.post-body th { background: var(--accent-soft); font-weight: 600; }
+
+.back {
+  margin: 3rem 0 0;
+  font-family: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: .9375rem;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 1.75rem 0 3rem;
+  border-top: 1px solid var(--line);
+  font-family: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: .8125rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.site-footer p { margin: 0 0 .6rem; }
+.site-footer p:last-child { margin-bottom: 0; }
+.site-footer .disclaimer {
+  padding: .75rem .9rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.site-footer .copyright { opacity: .8; }
+
+/* ---------------------------------------------------------------- 桌機微調 */
+
+@media (min-width: 48rem) {
+  body { font-size: 1.125rem; }
+  .wrap { padding-inline: 2rem; }
+  .site-header { margin-bottom: 2.75rem; }
+  .card { padding: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  .card:hover { transform: none; }
+}
+
+/* 窄螢幕：meta 列換行時，行尾會留下孤立的分隔點。
+   直接隱藏分隔點改用間距區隔——有「發布 / 更新」標籤，不靠點也讀得懂。 */
+@media (max-width: 30rem) {
+  .card-meta, .post-meta { gap: 0 .9rem; }
+  .card-meta .sep, .post-meta .sep { display: none; }
+  .card-meta .views, .post-meta .views { flex-basis: 100%; }
+}
