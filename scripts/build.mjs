@@ -31,6 +31,7 @@ const SITE = {
   // 舊網址轉址（文章改名時在這裡補一行，避免既有連結失效）
   redirects: [
     ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
+    ['/20260905-writing-format', '/20260905-two-worlds'],
   ],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
@@ -50,22 +51,28 @@ const SITE = {
       '韓國大邱 구병원 醫院進修',
     ],
   },
-  // HERO 圖片（CC BY 2.0，出處標示於 footer）
+  // 進站 Banner（本地圖片）
   hero: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
-    width: 1280,
-    height: 853,
-    alt: '一位醫師手持聽診器',
-    workTitle: 'The Stethoscope, Peru',
-    workUrl: 'https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg',
-    creator: 'Alex Proimos',
-    license: 'CC BY 2.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
-    sourceName: 'Wikimedia Commons',
+    file: 'banner.jpg',
+    width: 850,
+    height: 478,
+    alt: '一條小路分隔乾裂荒地與青綠草原，一個人站在交界處',
   },
 };
 
 /* ------------------------------------------------------------------ 小工具 */
+
+/** Banner 路徑（帶內容雜湊，避免舊快取） */
+const heroPath = () => `/assets/${SITE.hero.file}?v=${ASSETS.banner}`;
+const heroAbs = () => SITE.origin + heroPath();
+
+/** YouTube 縮圖
+ *  maxresdefault 不是每支影片都有，而且缺少時會回 404 卻夾帶一張 120x90 佔位圖
+ *  （onerror 不會觸發），所以預設用必定存在的 hqdefault，
+ *  再由 site.js 確認 maxresdefault 真的可用時才升級。 */
+const ytThumbSafe = (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+const ytImgTag = (id) =>
+  `<img src="${ytThumbSafe(id)}" data-yt-thumb="${id}" alt="" width="1280" height="720" loading="lazy">`;
 
 const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -170,7 +177,7 @@ function renderMarkdown(md) {
       const id = yt[1];
       out.push(`<div class="video">
   <a class="video-facade" href="https://www.youtube.com/watch?v=${id}" data-yt="${id}" aria-label="播放影片">
-    <img src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy">
+    ${ytImgTag(id)}
     <span class="video-play" aria-hidden="true">
       <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
     </span>
@@ -249,9 +256,9 @@ function renderMarkdown(md) {
 /* ------------------------------------------------------------------ 資產版本 */
 
 // 以檔案內容雜湊當版本號，確保改版後瀏覽器不可能吃到舊快取
-const ASSETS = { css: '0', js: '0', portrait: '0' };
+const ASSETS = { css: '0', js: '0', portrait: '0', banner: '0' };
 function hashAssets() {
-  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js'], ['portrait', 'portrait.jpg']]) {
+  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js'], ['portrait', 'portrait.jpg'], ['banner', 'banner.jpg']]) {
     try {
       ASSETS[key] = createHash('sha256').update(readFileSync(join(ASSETS_DIR, file))).digest('hex').slice(0, 8);
     } catch { /* 檔案不存在就維持預設 */ }
@@ -264,7 +271,7 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
 
-function head(title, description, canonicalPath, image = SITE.hero.src) {
+function head(title, description, canonicalPath, image = heroAbs()) {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
 <head>
@@ -321,15 +328,7 @@ ${items.map((t) => `            <li>${esc(t)}</li>`).join('\n')}
         </div>`;
 }
 
-function footer(showImageCredit = true) {
-  const h = SITE.hero;
-  const credit = showImageCredit
-    ? `<p class="credit">
-        HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
-        by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
-        <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
-      </p>`
-    : '';
+function footer() {
   return `<footer class="site-footer">
   <div class="wrap">
     <div class="foot-top">
@@ -340,7 +339,6 @@ function footer(showImageCredit = true) {
           <p class="foot-zh">${esc(SITE.subtitle)}</p>
         </div>
       </div>
-      ${credit}
     </div>
     <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
     <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
@@ -351,7 +349,7 @@ function footer(showImageCredit = true) {
 /** 全出血寬字距圖帶（參考站的 SHIZUOKA CITY DENTAL CLINIC 那一段） */
 function wordBand() {
   return `<section class="band" aria-hidden="true">
-  <img src="${escAttr(SITE.hero.src)}" alt="" loading="lazy">
+  <img src="${escAttr(heroPath())}" alt="" loading="lazy">
   <p class="band-text">KYLIN&#39;S NOTE</p>
 </section>`;
 }
@@ -376,7 +374,7 @@ function renderIndex(posts) {
       // 影片縮圖只是預覽，點任何位置都是進入文章頁；影片在文章頁才能播放
       const thumb = p.video
         ? `<span class="card-thumb">
-              <img src="https://i.ytimg.com/vi/${escAttr(p.video)}/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy">
+              ${ytImgTag(p.video)}
               <span class="card-play" aria-hidden="true">
                 <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
               </span>
@@ -404,7 +402,7 @@ ${siteHeader()}
 <main id="main">
 
   <section class="hero">
-    <img class="hero-img" src="${escAttr(SITE.hero.src)}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
+    <img class="hero-img" src="${escAttr(heroPath())}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
     <div class="hero-inner wrap">
       <p class="hero-kicker">那些教科書沒有寫完的臨床經驗</p>
       <h1 class="hero-title">林耿億醫師的<br>醫療筆記</h1>
@@ -478,7 +476,7 @@ ${footer()}
 }
 
 function renderPost(p) {
-  const ogImage = p.video ? `https://i.ytimg.com/vi/${p.video}/maxresdefault.jpg` : SITE.hero.src;
+  const ogImage = p.video ? ytThumbSafe(p.video) : heroAbs();
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
 <body data-slug="${escAttr(p.slug)}">
 <a class="skip" href="#main">跳至主要內容</a>
@@ -503,7 +501,7 @@ ${p.html}
   </article>
 
 </main>
-${footer(!p.video)}
+${footer()}
 <script src="/assets/site.js?v=${ASSETS.js}" defer></script>
 </body>
 </html>

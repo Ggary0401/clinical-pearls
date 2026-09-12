@@ -2,6 +2,28 @@
    - 文章頁：每個瀏覽器分頁計 1 次（sessionStorage 去重），避免重整灌水
    - 首頁卡片：只讀取不累加
    - 後端掛掉時靜默降級顯示「—」，不影響閱讀 */
+/* YouTube 縮圖升級
+   預設載入必定存在的 hqdefault（480x360）。若該影片真的有 maxresdefault
+   （1280x720）才換上去 —— 缺少時 YouTube 會回 404 並夾帶 120x90 佔位圖，
+   直接使用會變成模糊小圖被拉大，所以先驗證尺寸再替換。 */
+(function () {
+  'use strict';
+
+  var thumbs = document.querySelectorAll('img[data-yt-thumb]');
+
+  for (var i = 0; i < thumbs.length; i++) {
+    (function (img) {
+      var id = img.getAttribute('data-yt-thumb');
+      if (!id) return;
+      var probe = new Image();
+      probe.onload = function () {
+        if (probe.naturalWidth >= 1280) img.src = probe.src;
+      };
+      probe.src = 'https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/maxresdefault.jpg';
+    })(thumbs[i]);
+  }
+})();
+
 /* YouTube 點擊播放
    預設只載入縮圖；點擊後在原地換成播放器，不跳離頁面。
    沒有 JavaScript 時，連結仍可正常前往 YouTube。 */
