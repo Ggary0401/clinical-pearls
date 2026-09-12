@@ -141,7 +141,11 @@ function inline(text) {
         return `<code>${esc(part.slice(1, -1))}</code>`;
       }
       let s = esc(part);
-      s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => `<img src="${escAttr(src)}" alt="${escAttr(alt)}" loading="lazy">`);
+      s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => {
+        const local = src.match(/^\/assets\/([^?#]+)$/);
+        const url = local ? assetUrl(local[1]) : src;
+        return `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy">`;
+      });
       s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => {
         const ext = /^https?:\/\//.test(href);
         const rel = ext ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -264,15 +268,17 @@ function renderMarkdown(md) {
 
 /* ------------------------------------------------------------------ 資產版本 */
 
-// 以檔案內容雜湊當版本號，確保改版後瀏覽器不可能吃到舊快取
-const ASSETS = { css: '0', js: '0', portrait: '0', banner: '0' };
+// 掃描 assets/ 產生內容雜湊表。任何檔案（含文章裡引用的圖片）都自動帶版號，
+// 確保改版後瀏覽器不可能吃到舊快取。
+const ASSET_HASHES = {};
 function hashAssets() {
-  for (const [key, file] of [['css', 'style.css'], ['js', 'site.js'], ['portrait', 'portrait.jpg'], ['banner', 'banner.jpg']]) {
+  for (const f of readdirSync(ASSETS_DIR)) {
     try {
-      ASSETS[key] = createHash('sha256').update(readFileSync(join(ASSETS_DIR, file))).digest('hex').slice(0, 8);
-    } catch { /* 檔案不存在就維持預設 */ }
+      ASSET_HASHES[f] = createHash('sha256').update(readFileSync(join(ASSETS_DIR, f))).digest('hex').slice(0, 8);
+    } catch { /* 讀不到就跳過 */ }
   }
 }
+const assetUrl = (file) => `/assets/${file}${ASSET_HASHES[file] ? `?v=${ASSET_HASHES[file]}` : ''}`;
 
 /* ------------------------------------------------------------------ 版型 */
 
@@ -299,7 +305,7 @@ function head(title, description, canonicalPath, image = SITE.preview.src) {
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 ${FONTS}
-<link rel="stylesheet" href="/assets/style.css?v=${ASSETS.css}">
+<link rel="stylesheet" href="${assetUrl('style.css')}">
 </head>`;
 }
 
@@ -429,7 +435,7 @@ ${siteHeader()}
       ${sectionTitle('ABOUT', '關於我')}
       <div class="about-body">
         <figure class="portrait">
-          <img src="/assets/portrait.jpg?v=${ASSETS.portrait}" width="675" height="900" alt="${escAttr(SITE.author)}" loading="lazy">
+          <img src="${assetUrl('portrait.jpg')}" width="675" height="900" alt="${escAttr(SITE.author)}" loading="lazy">
         </figure>
         <div class="cv">
           ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
@@ -451,7 +457,7 @@ ${cards}
 
 </main>
 ${footer()}
-<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
+<script src="${assetUrl('site.js')}" defer></script>
 </body>
 </html>
 `;
@@ -474,7 +480,7 @@ ${siteHeader()}
   </section>
 </main>
 ${footer()}
-<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
+<script src="${assetUrl('site.js')}" defer></script>
 </body>
 </html>
 `;
@@ -507,7 +513,7 @@ ${p.html}
 
 </main>
 ${footer()}
-<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
+<script src="${assetUrl('site.js')}" defer></script>
 </body>
 </html>
 `;

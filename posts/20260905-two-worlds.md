@@ -65,6 +65,8 @@ https://www.youtube.com/watch?v=38tRSCKexvM
 
 另一個發現時，已經不是一句「痔瘡」可以帶過。
 
+![一條小路分隔乾裂荒地與青綠草原，一個人站在交界處](/assets/two-worlds.jpg)
+
 不同的階段，不同的世界。
 
 你可以不一樣
