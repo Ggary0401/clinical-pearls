@@ -2,6 +2,36 @@
    - 文章頁：每個瀏覽器分頁計 1 次（sessionStorage 去重），避免重整灌水
    - 首頁卡片：只讀取不累加
    - 後端掛掉時靜默降級顯示「—」，不影響閱讀 */
+/* YouTube 點擊播放
+   預設只載入縮圖；點擊後在原地換成播放器，不跳離頁面。
+   沒有 JavaScript 時，連結仍可正常前往 YouTube。 */
+(function () {
+  'use strict';
+
+  var facades = document.querySelectorAll('.video-facade');
+
+  for (var i = 0; i < facades.length; i++) {
+    facades[i].addEventListener('click', function (e) {
+      var a = e.currentTarget;
+      var id = a.getAttribute('data-yt');
+      if (!id) return;
+      e.preventDefault();
+
+      var frame = document.createElement('iframe');
+      frame.className = 'video-frame';
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+                  '?autoplay=1&rel=0&playsinline=1';
+      frame.title = '影片';
+      frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      frame.setAttribute('allowfullscreen', '');
+      frame.setAttribute('frameborder', '0');
+
+      a.parentNode.replaceChild(frame, a);
+      frame.focus();
+    });
+  }
+})();
+
 (function () {
   'use strict';
 

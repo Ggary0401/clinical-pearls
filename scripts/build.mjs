@@ -139,6 +139,7 @@ function renderMarkdown(md) {
   const out = [];
   let i = 0;
 
+  const YT = /^\s*(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/watch\?(?:[^\s]*&)?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})(?:[?&#][^\s]*)?\s*$/;
   const isTableSep = (l) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
   const cells = (l) => l.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map((c) => c.trim());
 
@@ -156,6 +157,22 @@ function renderMarkdown(md) {
       i++;
       const cls = lang ? ` class="language-${escAttr(lang)}"` : '';
       out.push(`<pre><code${cls}>${esc(buf.join('\n'))}</code></pre>`);
+      continue;
+    }
+
+    // 單獨一行的 YouTube 網址 -> 點擊才載入播放器（不跳頁、不拖慢首次載入）
+    const yt = line.match(YT);
+    if (yt) {
+      const id = yt[1];
+      out.push(`<div class="video">
+  <a class="video-facade" href="https://www.youtube.com/watch?v=${id}" data-yt="${id}" aria-label="播放影片">
+    <img src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy">
+    <span class="video-play" aria-hidden="true">
+      <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+    </span>
+  </a>
+</div>`);
+      i++;
       continue;
     }
 
@@ -216,7 +233,8 @@ function renderMarkdown(md) {
       !ul.test(lines[i]) &&
       !ol.test(lines[i]) &&
       !/^\s*\|/.test(lines[i]) &&
-      !/^\s*(-{3,}|\*{3,})\s*$/.test(lines[i])
+      !/^\s*(-{3,}|\*{3,})\s*$/.test(lines[i]) &&
+      !YT.test(lines[i])
     ) buf.push(lines[i++]);
     if (buf.length) out.push(`<p>${inline(buf.join(' '))}</p>`);
   }

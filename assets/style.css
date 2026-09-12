@@ -472,6 +472,46 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 
 .post-body img { border-radius: var(--radius); margin: 2rem 0; }
 
+/* 影片：先只載縮圖，點擊後原地換成播放器 */
+.video {
+  position: relative;
+  margin: 0 0 2rem;
+  aspect-ratio: 16 / 9;
+  background: var(--navy-deep);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.post-body > .video:first-child { margin-top: 0; }
+
+.video-facade {
+  position: absolute;
+  inset: 0;
+  display: block;
+  cursor: pointer;
+}
+.video-facade img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+.video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4.25rem;
+  pointer-events: none;
+}
+.video-play svg { width: 100%; height: auto; }
+.video-play-bg { fill: #1f1f1f; opacity: .78; transition: opacity .2s ease, fill .2s ease; }
+.video-facade:hover .video-play-bg,
+.video-facade:focus-visible .video-play-bg { fill: #c00; opacity: 1; }
+
+.video-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
 .post-body strong { font-weight: 600; color: var(--navy); }
 
 /* 程式碼：橫向捲動，絕不撐破版面 */
