@@ -5,7 +5,7 @@
 
 :root {
   /* 版心 */
-  --wide: 72rem;             /* 首頁等寬版面 */
+  --wide: 44rem;             /* 單一直欄：電腦版比照手機的版面結構 */
   --narrow: 44rem;           /* 內容文字區寬度，文章圖片不得超過 */
 
   /* 配色 */
@@ -181,7 +181,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 
 .hero-title {
   margin: 0;
-  font-size: clamp(1.75rem, 6.2vw, 3rem);
+  font-size: clamp(1.75rem, 6.2vw, 2.25rem);
   font-weight: 400;
   line-height: 1.55;
   letter-spacing: .1em;
@@ -191,7 +191,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .hero-script {
   margin: .6rem 0 0;
   font-family: var(--font-script);
-  font-size: clamp(1.5rem, 4.5vw, 2.25rem);
+  font-size: clamp(1.5rem, 4.5vw, 1.85rem);
   font-weight: 400;
   letter-spacing: .02em;
   opacity: .95;
@@ -219,7 +219,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .sec-en {
   margin: 0;
   font-family: var(--font-en);
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-size: clamp(1.6rem, 5vw, 1.9rem);
   font-weight: 200;
   line-height: 1.2;
   letter-spacing: .18em;
@@ -235,7 +235,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 /* ================================================================ ABOUT */
 
 .about { padding: clamp(3.5rem, 9vw, 6rem) 0; }
-.about-body { max-width: 40rem; }
+.about-body { max-width: none; }
 .about-body .lead {
   margin: 0 0 1.25rem;
   font-size: clamp(1.0625rem, 2.6vw, 1.25rem);
@@ -245,17 +245,12 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 }
 .about-body p { margin: 0 0 1rem; color: var(--muted); }
 
-@media (min-width: 56rem) {
-  .about-grid { display: grid; grid-template-columns: 16rem 1fr; gap: 3rem; align-items: start; }
-  .about-grid .sec-head { margin-bottom: 0; }
-}
 
 /* ================================================================ 筆記卡片 */
 
 .notes { background: var(--blue-tint); padding: clamp(3.5rem, 9vw, 6rem) 0; }
 
 .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
-@media (min-width: 52rem) { .cards { grid-template-columns: repeat(2, 1fr); } }
 
 .card { display: flex; }
 .card-link {
@@ -464,9 +459,6 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 }
 
 .foot-top { display: grid; gap: 1.5rem; margin-bottom: 1.75rem; }
-@media (min-width: 52rem) {
-  .foot-top { grid-template-columns: auto 1fr; gap: 3rem; align-items: start; }
-}
 
 .foot-brand { display: flex; align-items: center; gap: .75rem; }
 .foot-en { margin: 0; font-family: var(--font-en); font-size: .9375rem; letter-spacing: .14em; color: var(--navy); line-height: 1.4; }
