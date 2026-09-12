@@ -61,20 +61,19 @@ const SITE = {
     licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
     sourceName: 'Wikimedia Commons',
   },
-  // 進站 Banner（本地圖片）
+  // 進站 Banner（與分享預覽圖同一張，CC BY 2.0，出處標示於頁尾）
   hero: {
-    file: 'banner.jpg',
-    width: 850,
-    height: 478,
-    alt: '一條小路分隔乾裂荒地與青綠草原，一個人站在交界處',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
+    width: 1280,
+    height: 853,
+    alt: '一位醫師手持聽診器',
   },
 };
 
 /* ------------------------------------------------------------------ 小工具 */
 
-/** Banner 路徑（帶內容雜湊，避免舊快取） */
-const heroPath = () => `/assets/${SITE.hero.file}?v=${ASSETS.banner}`;
-const heroAbs = () => SITE.origin + heroPath();
+/** Banner 圖片網址 */
+const heroPath = () => SITE.hero.src;
 
 /** YouTube 縮圖
  *  maxresdefault 不是每支影片都有，而且缺少時會回 404 卻夾帶一張 120x90 佔位圖
@@ -350,7 +349,7 @@ function footer() {
         </div>
       </div>
       <p class="credit">
-        分享預覽圖：<a href="${escAttr(SITE.preview.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.workTitle)}</a>
+        Banner 與分享預覽圖：<a href="${escAttr(SITE.preview.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.workTitle)}</a>
         by ${esc(SITE.preview.creator)}，取自 ${esc(SITE.preview.sourceName)}，授權
         <a href="${escAttr(SITE.preview.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.license)}</a>。
       </p>

@@ -152,7 +152,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   width: 100%;
   height: clamp(20rem, 62vh, 34rem);
   object-fit: cover;
-  object-position: center center;
+  object-position: center 30%;   /* 對齊聽診器照片的構圖 */
 }
 
 .hero::after {
