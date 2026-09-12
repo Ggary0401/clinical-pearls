@@ -80,8 +80,8 @@ const heroPath = () => SITE.hero.src;
  *  （onerror 不會觸發），所以預設用必定存在的 hqdefault，
  *  再由 site.js 確認 maxresdefault 真的可用時才升級。 */
 const ytThumbSafe = (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-const ytImgTag = (id) =>
-  `<img src="${ytThumbSafe(id)}" data-yt-thumb="${id}" alt="" width="1280" height="720" loading="lazy">`;
+const ytImgTag = (id, extra = '') =>
+  `<img src="${ytThumbSafe(id)}" data-yt-thumb="${id}"${extra} alt="" width="1280" height="720" loading="lazy">`;
 
 const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -425,7 +425,7 @@ function renderIndex(posts) {
       let thumb = '';
       if (p.lead && p.lead.type === 'video') {
         thumb = `<span class="card-thumb">
-              ${ytImgTag(p.lead.id)}
+              ${ytImgTag(p.lead.id, ' crossorigin="anonymous"')}
               <span class="card-play" aria-hidden="true">
                 <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
               </span>
@@ -433,7 +433,7 @@ function renderIndex(posts) {
             `;
       } else if (p.lead && p.lead.type === 'image') {
         thumb = `<span class="card-thumb">
-              <img src="${escAttr(p.lead.src)}" alt="" loading="lazy">
+              <img src="${escAttr(p.lead.src)}" crossorigin="anonymous" alt="" loading="lazy">
             </span>
             `;
       }
