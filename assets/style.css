@@ -469,6 +469,11 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 
 .post-body img { border-radius: var(--radius); margin: 2rem 0; }
 
+/* 單獨成段的圖片 */
+.post-figure { margin: 2rem 0; }
+.post-figure img { margin: 0; }
+.post-body > .post-figure:first-child { margin-top: 0; }
+
 /* 影片：先只載縮圖，點擊後原地換成播放器 */
 .video {
   position: relative;

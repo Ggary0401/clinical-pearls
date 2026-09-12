@@ -158,7 +158,7 @@ function inline(text) {
     .join('');
 }
 
-function renderMarkdown(md) {
+function renderMarkdown(md, isRoot = true) {
   const lines = String(md).replace(/\r\n/g, '\n').split('\n');
   const out = [];
   let i = 0;
@@ -200,6 +200,20 @@ function renderMarkdown(md) {
       continue;
     }
 
+    // 單獨一行的圖片 -> figure 區塊（避免被包進 <p> 而多出留白）
+    const fig = line.match(/^\s*!\[([^\]]*)\]\(([^)\s]+)\)\s*$/);
+    if (fig) {
+      const [, alt, rawSrc] = fig;
+      const local = rawSrc.match(/^\/assets\/([^?#]+)$/);
+      const src = local ? assetUrl(local[1]) : rawSrc;
+      // 全文第一個區塊是首屏主視覺，優先載入而非延後
+      const lead = isRoot && out.length === 0;
+      const loadAttr = lead ? ' fetchpriority="high"' : ' loading="lazy"';
+      out.push(`<figure class="post-figure"><img src="${escAttr(src)}" alt="${escAttr(alt)}"${loadAttr}></figure>`);
+      i++;
+      continue;
+    }
+
     // 分隔線
     if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
 
@@ -229,7 +243,7 @@ function renderMarkdown(md) {
     if (/^\s*>\s?/.test(line)) {
       const buf = [];
       while (i < lines.length && /^\s*>\s?/.test(lines[i])) buf.push(lines[i++].replace(/^\s*>\s?/, ''));
-      out.push(`<blockquote>${renderMarkdown(buf.join('\n'))}</blockquote>`);
+      out.push(`<blockquote>${renderMarkdown(buf.join('\n'), false)}</blockquote>`);
       continue;
     }
 
