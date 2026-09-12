@@ -207,6 +207,10 @@ function renderMarkdown(md) {
 
 /* ------------------------------------------------------------------ 版型 */
 
+const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
+
 function head(title, description, canonicalPath) {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
@@ -225,74 +229,142 @@ function head(title, description, canonicalPath) {
 <meta property="og:image" content="${escAttr(SITE.hero.src)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+${FONTS}
 <link rel="stylesheet" href="/assets/style.css">
 </head>`;
 }
 
-function heroFigure() {
-  const h = SITE.hero;
-  return `<figure class="hero">
-  <img src="${escAttr(h.src)}" width="${h.width}" height="${h.height}" alt="${escAttr(h.alt)}" fetchpriority="high">
-</figure>`;
+/** 站頭：左側品牌標記，右側膠囊按鈕（參考站的 CI 結構） */
+function siteHeader() {
+  return `<header class="site-header">
+  <div class="wrap head-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">CP</span>
+      <span class="brand-text">
+        <span class="brand-en">${esc(SITE.title)}</span>
+        <span class="brand-zh">${esc(SITE.subtitle)}</span>
+      </span>
+    </a>
+    <a class="pill" href="/#notes">全部筆記</a>
+  </div>
+</header>`;
+}
+
+/** 區塊標題：英文大標 + 中文小副標 */
+function sectionTitle(en, zh, id = '') {
+  return `<div class="sec-head"${id ? ` id="${escAttr(id)}"` : ''}>
+    <h2 class="sec-en">${esc(en)}</h2>
+    <p class="sec-zh">${esc(zh)}</p>
+  </div>`;
 }
 
 function footer() {
   const h = SITE.hero;
   return `<footer class="site-footer">
-  <p class="credit">
-    HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
-    by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
-    <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
-  </p>
-  <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
-  <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand-mark" aria-hidden="true">CP</span>
+        <div>
+          <p class="foot-en">${esc(SITE.title)}</p>
+          <p class="foot-zh">${esc(SITE.subtitle)}</p>
+        </div>
+      </div>
+      <p class="credit">
+        HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
+        by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
+        <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
+      </p>
+    </div>
+    <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
+    <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
+  </div>
 </footer>`;
 }
 
+/** 全出血寬字距圖帶（參考站的 SHIZUOKA CITY DENTAL CLINIC 那一段） */
+function wordBand() {
+  return `<section class="band" aria-hidden="true">
+  <img src="${escAttr(SITE.hero.src)}" alt="" loading="lazy">
+  <p class="band-text">CLINICAL PEARLS</p>
+</section>`;
+}
+
+function metaRow(p) {
+  return `<p class="meta">
+      <span class="byline">${esc(p.author)}</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="${escAttr(p.date)}">發布 ${fmtDate(p.date)}</time>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="${escAttr(p.updated)}">更新 ${fmtDate(p.updated)}</time>
+      <span class="sep sep-views" aria-hidden="true">/</span>
+      <span class="views"><span data-views="${escAttr(p.slug)}">—</span> 次瀏覽</span>
+    </p>`;
+}
+
 function renderIndex(posts) {
+  const latest = posts.length ? posts[0].updated : todayISO();
+
   const cards = posts
     .map(
-      (p) => `      <li class="card">
-        <article>
-          <h2 class="card-title"><a href="/${escAttr(p.slug)}">${esc(p.title)}</a></h2>
-          <p class="card-summary">${esc(p.summary)}</p>
-          <p class="card-meta">
-            <span class="byline">${esc(p.author)}</span>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="${escAttr(p.date)}">發布 ${fmtDate(p.date)}</time>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="${escAttr(p.updated)}">更新 ${fmtDate(p.updated)}</time>
-            <span class="sep sep-views" aria-hidden="true">·</span>
-            <span class="views"><span data-views="${escAttr(p.slug)}">—</span> 次瀏覽</span>
-          </p>
-        </article>
-      </li>`
+      (p, i) => `        <li class="card">
+          <a class="card-link" href="/${escAttr(p.slug)}">
+            <span class="card-no">${String(i + 1).padStart(2, '0')}</span>
+            <h3 class="card-title">${esc(p.title)}</h3>
+            <p class="card-summary">${esc(p.summary)}</p>
+            ${metaRow(p)}
+            <span class="card-more">閱讀筆記 <span aria-hidden="true">→</span></span>
+          </a>
+        </li>`
     )
     .join('\n');
 
   return `${head(`${SITE.title} · ${SITE.subtitle}`, SITE.description, '/')}
 <body>
 <a class="skip" href="#main">跳至主要內容</a>
-<header class="site-header">
-  <div class="wrap">
-    <p class="brand"><a href="/">${esc(SITE.title)}</a></p>
-    <p class="tagline">${esc(SITE.subtitle)}</p>
+${siteHeader()}
+<main id="main">
+
+  <section class="hero">
+    <img class="hero-img" src="${escAttr(SITE.hero.src)}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
+    <div class="hero-inner wrap">
+      <p class="hero-kicker">臨床所學，寫成日後找得回來的形式</p>
+      <h1 class="hero-title">林耿億醫師的<br>醫療筆記</h1>
+      <p class="hero-script">Clinical Pearls</p>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <span>共 ${posts.length} 篇筆記</span>
+      <span class="strip-sep" aria-hidden="true"></span>
+      <span>最後更新 ${fmtDate(latest)}</span>
+    </div>
   </div>
-</header>
-<main id="main" class="wrap">
-  ${heroFigure()}
-  <section class="intro">
-    <h1>${esc(SITE.subtitle)}</h1>
-    <p>${esc(SITE.description)}</p>
+
+  <section class="about">
+    <div class="wrap about-grid">
+      ${sectionTitle('ABOUT', '關於這個站')}
+      <div class="about-body">
+        <p class="lead">把零散的筆記、讀到的文獻重點，寫成三年後的自己也找得回來的形式。</p>
+        <p>臨床工作最常發生的事，是「我記得以前查過這個」，然後找不到當時查到哪裡、結論是什麼。這個站就是為了解決這件事而開的。</p>
+      </div>
+    </div>
   </section>
-  <section class="listing" aria-label="文章列表">
-    <h2 class="listing-title">全部筆記 <span class="count">（${posts.length} 篇）</span></h2>
-    <ul class="cards">
+
+  <section class="notes">
+    <div class="wrap">
+      ${sectionTitle('NOTES', '全部筆記', 'notes')}
+      <ul class="cards">
 ${cards}
-    </ul>
+      </ul>
+    </div>
   </section>
+
+  ${wordBand()}
+
 </main>
-<div class="wrap">${footer()}</div>
+${footer()}
 <script src="/assets/site.js" defer></script>
 </body>
 </html>
@@ -303,30 +375,29 @@ function renderPost(p) {
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`)}
 <body data-slug="${escAttr(p.slug)}">
 <a class="skip" href="#main">跳至主要內容</a>
-<header class="site-header">
-  <div class="wrap">
-    <p class="brand"><a href="/">${esc(SITE.title)}</a></p>
-    <p class="tagline">${esc(SITE.subtitle)}</p>
-  </div>
-</header>
-<main id="main" class="wrap">
+${siteHeader()}
+<main id="main">
+
+  <section class="post-head">
+    <div class="wrap-narrow">
+      <p class="crumb"><a href="/">HOME</a> <span aria-hidden="true">/</span> NOTES</p>
+      <h1 class="post-title">${esc(p.title)}</h1>
+      ${metaRow(p)}
+    </div>
+  </section>
+
   <article class="post">
-    ${heroFigure()}
-    <h1>${esc(p.title)}</h1>
-    <p class="post-meta">
-      <span class="byline">${esc(p.author)}</span>
-      <span class="sep" aria-hidden="true">·</span>
-      <time datetime="${escAttr(p.date)}">發布 ${fmtDate(p.date)}</time>
-      <span class="sep" aria-hidden="true">·</span>
-      <time datetime="${escAttr(p.updated)}">更新 ${fmtDate(p.updated)}</time>
-      <span class="sep sep-views" aria-hidden="true">·</span>
-      <span class="views"><span data-views="${escAttr(p.slug)}">—</span> 次瀏覽</span>
-    </p>
-    <div class="post-body">
+    <div class="wrap-narrow">
+      <figure class="post-hero">
+        <img src="${escAttr(SITE.hero.src)}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
+      </figure>
+      <div class="post-body">
 ${p.html}
+      </div>
+      <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到全部筆記</a></p>
     </div>
   </article>
-  <p class="back"><a href="/">← 回到全部筆記</a></p>
+
 </main>
 ${footer()}
 <script src="/assets/site.js" defer></script>

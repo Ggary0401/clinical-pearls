@@ -15,69 +15,128 @@
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 <a class="skip" href="#main">跳至主要內容</a>
 <header class="site-header">
-  <div class="wrap">
-    <p class="brand"><a href="/">Clinical Pearls</a></p>
-    <p class="tagline">林耿億醫師的醫療筆記</p>
+  <div class="wrap head-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">CP</span>
+      <span class="brand-text">
+        <span class="brand-en">Clinical Pearls</span>
+        <span class="brand-zh">林耿億醫師的醫療筆記</span>
+      </span>
+    </a>
+    <a class="pill" href="/#notes">全部筆記</a>
   </div>
 </header>
-<main id="main" class="wrap">
-  <figure class="hero">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" width="1280" height="853" alt="一位醫師手持聽診器" fetchpriority="high">
-</figure>
-  <section class="intro">
-    <h1>林耿億醫師的醫療筆記</h1>
-    <p>林耿億醫師的臨床筆記與心得整理。</p>
+<main id="main">
+
+  <section class="hero">
+    <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" width="1280" height="853" alt="一位醫師手持聽診器" fetchpriority="high">
+    <div class="hero-inner wrap">
+      <p class="hero-kicker">臨床所學，寫成日後找得回來的形式</p>
+      <h1 class="hero-title">林耿億醫師的<br>醫療筆記</h1>
+      <p class="hero-script">Clinical Pearls</p>
+    </div>
   </section>
-  <section class="listing" aria-label="文章列表">
-    <h2 class="listing-title">全部筆記 <span class="count">（2 篇）</span></h2>
-    <ul class="cards">
-      <li class="card">
-        <article>
-          <h2 class="card-title"><a href="/20260912-introduction">開站說明：為什麼要寫醫療筆記</a></h2>
-          <p class="card-summary">這個站是我整理臨床所學的地方——把零散的筆記、讀到的文獻重點，寫成日後自己找得回來的形式。</p>
-          <p class="card-meta">
-            <span class="byline">林耿億醫師</span>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-09-12">發布 2026-09-12</time>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-09-12">更新 2026-09-12</time>
-            <span class="sep sep-views" aria-hidden="true">·</span>
-            <span class="views"><span data-views="20260912-introduction">—</span> 次瀏覽</span>
-          </p>
-        </article>
-      </li>
-      <li class="card">
-        <article>
-          <h2 class="card-title"><a href="/20260905-writing-format">筆記的排版格式（範本）</a></h2>
-          <p class="card-summary">這篇同時是格式說明與範本——列出寫筆記時可以用的排版元素，新增文章時複製這個檔案改寫即可。</p>
-          <p class="card-meta">
-            <span class="byline">林耿億醫師</span>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-09-05">發布 2026-09-05</time>
-            <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-09-12">更新 2026-09-12</time>
-            <span class="sep sep-views" aria-hidden="true">·</span>
-            <span class="views"><span data-views="20260905-writing-format">—</span> 次瀏覽</span>
-          </p>
-        </article>
-      </li>
-    </ul>
+
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <span>共 2 篇筆記</span>
+      <span class="strip-sep" aria-hidden="true"></span>
+      <span>最後更新 2026-09-12</span>
+    </div>
+  </div>
+
+  <section class="about">
+    <div class="wrap about-grid">
+      <div class="sec-head">
+    <h2 class="sec-en">ABOUT</h2>
+    <p class="sec-zh">關於這個站</p>
+  </div>
+      <div class="about-body">
+        <p class="lead">把零散的筆記、讀到的文獻重點，寫成三年後的自己也找得回來的形式。</p>
+        <p>臨床工作最常發生的事，是「我記得以前查過這個」，然後找不到當時查到哪裡、結論是什麼。這個站就是為了解決這件事而開的。</p>
+      </div>
+    </div>
   </section>
+
+  <section class="notes">
+    <div class="wrap">
+      <div class="sec-head" id="notes">
+    <h2 class="sec-en">NOTES</h2>
+    <p class="sec-zh">全部筆記</p>
+  </div>
+      <ul class="cards">
+        <li class="card">
+          <a class="card-link" href="/20260912-introduction">
+            <span class="card-no">01</span>
+            <h3 class="card-title">開站說明：為什麼要寫醫療筆記</h3>
+            <p class="card-summary">這個站是我整理臨床所學的地方——把零散的筆記、讀到的文獻重點，寫成日後自己找得回來的形式。</p>
+            <p class="meta">
+      <span class="byline">林耿億醫師</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026-09-12">發布 2026-09-12</time>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026-09-12">更新 2026-09-12</time>
+      <span class="sep sep-views" aria-hidden="true">/</span>
+      <span class="views"><span data-views="20260912-introduction">—</span> 次瀏覽</span>
+    </p>
+            <span class="card-more">閱讀筆記 <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="/20260905-writing-format">
+            <span class="card-no">02</span>
+            <h3 class="card-title">筆記的排版格式（範本）</h3>
+            <p class="card-summary">這篇同時是格式說明與範本——列出寫筆記時可以用的排版元素，新增文章時複製這個檔案改寫即可。</p>
+            <p class="meta">
+      <span class="byline">林耿億醫師</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026-09-05">發布 2026-09-05</time>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026-09-12">更新 2026-09-12</time>
+      <span class="sep sep-views" aria-hidden="true">/</span>
+      <span class="views"><span data-views="20260905-writing-format">—</span> 次瀏覽</span>
+    </p>
+            <span class="card-more">閱讀筆記 <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-hidden="true">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" alt="" loading="lazy">
+  <p class="band-text">CLINICAL PEARLS</p>
+</section>
+
 </main>
-<div class="wrap"><footer class="site-footer">
-  <p class="credit">
-    HERO 圖片：<a href="https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg" target="_blank" rel="noopener noreferrer">The Stethoscope, Peru</a>
-    by Alex Proimos，取自 Wikimedia Commons，授權
-    <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>。
-  </p>
-  <p class="disclaimer">本站為 林耿億醫師 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
-  <p class="copyright">© 2026 林耿億醫師 · Clinical Pearls</p>
-</footer></div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand-mark" aria-hidden="true">CP</span>
+        <div>
+          <p class="foot-en">Clinical Pearls</p>
+          <p class="foot-zh">林耿億醫師的醫療筆記</p>
+        </div>
+      </div>
+      <p class="credit">
+        HERO 圖片：<a href="https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg" target="_blank" rel="noopener noreferrer">The Stethoscope, Peru</a>
+        by Alex Proimos，取自 Wikimedia Commons，授權
+        <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>。
+      </p>
+    </div>
+    <p class="disclaimer">本站為 林耿億醫師 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
+    <p class="copyright">© 2026 林耿億醫師 · Clinical Pearls</p>
+  </div>
+</footer>
 <script src="/assets/site.js" defer></script>
 </body>
 </html>

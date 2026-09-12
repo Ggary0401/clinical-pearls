@@ -15,32 +15,49 @@
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body data-slug="20260905-writing-format">
 <a class="skip" href="#main">跳至主要內容</a>
 <header class="site-header">
-  <div class="wrap">
-    <p class="brand"><a href="/">Clinical Pearls</a></p>
-    <p class="tagline">林耿億醫師的醫療筆記</p>
+  <div class="wrap head-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">CP</span>
+      <span class="brand-text">
+        <span class="brand-en">Clinical Pearls</span>
+        <span class="brand-zh">林耿億醫師的醫療筆記</span>
+      </span>
+    </a>
+    <a class="pill" href="/#notes">全部筆記</a>
   </div>
 </header>
-<main id="main" class="wrap">
-  <article class="post">
-    <figure class="hero">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" width="1280" height="853" alt="一位醫師手持聽診器" fetchpriority="high">
-</figure>
-    <h1>筆記的排版格式（範本）</h1>
-    <p class="post-meta">
+<main id="main">
+
+  <section class="post-head">
+    <div class="wrap-narrow">
+      <p class="crumb"><a href="/">HOME</a> <span aria-hidden="true">/</span> NOTES</p>
+      <h1 class="post-title">筆記的排版格式（範本）</h1>
+      <p class="meta">
       <span class="byline">林耿億醫師</span>
-      <span class="sep" aria-hidden="true">·</span>
+      <span class="sep" aria-hidden="true">/</span>
       <time datetime="2026-09-05">發布 2026-09-05</time>
-      <span class="sep" aria-hidden="true">·</span>
+      <span class="sep" aria-hidden="true">/</span>
       <time datetime="2026-09-12">更新 2026-09-12</time>
-      <span class="sep sep-views" aria-hidden="true">·</span>
+      <span class="sep sep-views" aria-hidden="true">/</span>
       <span class="views"><span data-views="20260905-writing-format">—</span> 次瀏覽</span>
     </p>
-    <div class="post-body">
+    </div>
+  </section>
+
+  <article class="post">
+    <div class="wrap-narrow">
+      <figure class="post-hero">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg" width="1280" height="853" alt="一位醫師手持聽診器" fetchpriority="high">
+      </figure>
+      <div class="post-body">
 <p>每篇筆記都是 <code>posts/</code> 目錄下的一個 Markdown 檔案，檔名就是網址。這篇示範所有支援的排版元素，新增文章時直接複製本檔改寫最快。</p>
 <h2>檔名與網址</h2>
 <p>檔名格式為 <code>YYYYMMDD-英文短名.md</code>，例如本檔為 <code>20260905-writing-format.md</code>，對應網址即 <code>/20260905-writing-format</code>。</p>
@@ -80,18 +97,31 @@ git push             # 推上去後 Cloudflare Pages 會自動部署</code></pre
 <h2>新增一篇筆記的完整流程</h2>
 <ol><li>在 <code>posts/</code> 建立新的 <code>.md</code> 檔，檔名用 <code>YYYYMMDD-短名.md</code></li><li>填好 front matter 的 <code>title</code>、<code>date</code>、<code>summary</code></li><li>寫內容</li><li>執行 <code>npm run build</code>，確認終端機列出的文章清單正確</li><li><code>git add -A &amp;&amp; git commit &amp;&amp; git push</code></li></ol>
 <p>推上去之後，Cloudflare Pages 會自動重新建置並上線，首頁卡片會多一張，排序自動把最新的放前面。</p>
+      </div>
+      <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到全部筆記</a></p>
     </div>
   </article>
-  <p class="back"><a href="/">← 回到全部筆記</a></p>
+
 </main>
 <footer class="site-footer">
-  <p class="credit">
-    HERO 圖片：<a href="https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg" target="_blank" rel="noopener noreferrer">The Stethoscope, Peru</a>
-    by Alex Proimos，取自 Wikimedia Commons，授權
-    <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>。
-  </p>
-  <p class="disclaimer">本站為 林耿億醫師 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
-  <p class="copyright">© 2026 林耿億醫師 · Clinical Pearls</p>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand-mark" aria-hidden="true">CP</span>
+        <div>
+          <p class="foot-en">Clinical Pearls</p>
+          <p class="foot-zh">林耿億醫師的醫療筆記</p>
+        </div>
+      </div>
+      <p class="credit">
+        HERO 圖片：<a href="https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg" target="_blank" rel="noopener noreferrer">The Stethoscope, Peru</a>
+        by Alex Proimos，取自 Wikimedia Commons，授權
+        <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>。
+      </p>
+    </div>
+    <p class="disclaimer">本站為 林耿億醫師 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
+    <p class="copyright">© 2026 林耿億醫師 · Clinical Pearls</p>
+  </div>
 </footer>
 <script src="/assets/site.js" defer></script>
 </body>
