@@ -25,7 +25,8 @@
 
   /* 字型 */
   --font-en: "Jost", "Helvetica Neue", Arial, sans-serif;
-  --font-zh: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Hiragino Sans", sans-serif;
+  /* 尾端的韓文字型備援，供「구병원」等字使用 */
+  --font-zh: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Hiragino Sans", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
   --font-script: "Parisienne", cursive;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -237,15 +238,52 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 /* ================================================================ ABOUT */
 
 .about { padding: clamp(3.5rem, 9vw, 6rem) 0; }
-.about-body { max-width: none; }
-.about-body .lead {
-  margin: 0 0 1.25rem;
-  font-size: clamp(1.0625rem, 2.6vw, 1.25rem);
-  line-height: 2;
+.about-body { max-width: none; display: grid; gap: clamp(2rem, 5vw, 2.75rem); }
+
+/* 學經歷 */
+.cv-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: .16em;
   color: var(--navy);
-  letter-spacing: .04em;
 }
-.about-body p { margin: 0 0 1rem; color: var(--muted); }
+.cv-en {
+  flex: none;
+  font-family: var(--font-en);
+  font-size: .625rem;
+  font-weight: 300;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+
+.cv-list { list-style: none; margin: 0; padding: 0; }
+.cv-list li {
+  position: relative;
+  margin: 0 0 .35rem;
+  padding-left: 1.25rem;
+  font-size: .9375rem;
+  line-height: 1.95;
+  color: var(--ink);
+}
+.cv-list li:last-child { margin-bottom: 0; }
+/* 以一段細藍橫線當項目符號，呼應整體的細線語彙 */
+.cv-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .95em;
+  width: .5rem;
+  height: 1px;
+  background: var(--blue);
+}
 
 
 /* ================================================================ 筆記卡片 */

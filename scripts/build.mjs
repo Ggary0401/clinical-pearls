@@ -28,6 +28,21 @@ const SITE = {
   lang: 'zh-Hant-TW',
   // 正式網址（canonical / sitemap 用）
   origin: 'https://drgarylin.com',
+  // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
+  cv: {
+    education: [
+      '台灣大學 EMBA',
+      '中國醫藥大學醫學系畢業',
+    ],
+    experience: [
+      '鹿基大腸直腸外科主任',
+      '彰基大腸直腸外科主治醫師',
+      '彰基外傷急診主治醫師',
+      '台灣肥胖醫學會會員',
+      '挪威 Tromsø 大學附設醫院進修',
+      '韓國大邱 구병원 醫院進修',
+    ],
+  },
   // HERO 圖片（CC BY 2.0，出處標示於 footer）
   hero: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
@@ -271,6 +286,16 @@ function sectionTitle(en, zh, id = '') {
   </div>`;
 }
 
+/** 學經歷區塊：中文標題 + 英文小標 + 條列 */
+function cvGroup(zh, en, items) {
+  return `<div class="cv-group">
+          <h3 class="cv-label"><span>${esc(zh)}</span><span class="cv-en">${esc(en)}</span></h3>
+          <ul class="cv-list">
+${items.map((t) => `            <li>${esc(t)}</li>`).join('\n')}
+          </ul>
+        </div>`;
+}
+
 function footer() {
   const h = SITE.hero;
   return `<footer class="site-footer">
@@ -357,10 +382,10 @@ ${siteHeader()}
 
   <section class="about">
     <div class="wrap about-grid">
-      ${sectionTitle('ABOUT', '關於這個站')}
+      ${sectionTitle('ABOUT', '關於我')}
       <div class="about-body">
-        <p class="lead">把零散的筆記、讀到的文獻重點，寫成三年後的自己也找得回來的形式。</p>
-        <p>臨床工作最常發生的事，是「我記得以前查過這個」，然後找不到當時查到哪裡、結論是什麼。這個站就是為了解決這件事而開的。</p>
+        ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
+        ${cvGroup('經歷', 'EXPERIENCE', SITE.cv.experience)}
       </div>
     </div>
   </section>
