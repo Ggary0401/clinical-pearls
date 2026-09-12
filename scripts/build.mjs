@@ -28,6 +28,10 @@ const SITE = {
   lang: 'zh-Hant-TW',
   // 正式網址（canonical / sitemap 用）
   origin: 'https://drgarylin.com',
+  // 舊網址轉址（文章改名時在這裡補一行，避免既有連結失效）
+  redirects: [
+    ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
+  ],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
     education: [
@@ -435,6 +439,29 @@ ${footer()}
 `;
 }
 
+/** 404 頁。沒有這個檔案時，Cloudflare Pages 會把不存在的路徑導回首頁並回傳 200（軟性 404，傷 SEO）。 */
+function render404() {
+  return `${head(`找不到頁面 · ${SITE.title}`, '找不到這個頁面。', '/404')}
+<body>
+<a class="skip" href="#main">跳至主要內容</a>
+${siteHeader()}
+<main id="main">
+  <section class="notfound">
+    <div class="wrap-narrow">
+      <p class="nf-code">404</p>
+      <h1 class="nf-title">找不到這個頁面</h1>
+      <p class="nf-text">這個網址可能已經更動或不存在。你可以回到首頁，從全部筆記裡找找看。</p>
+      <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到全部筆記</a></p>
+    </div>
+  </section>
+</main>
+${footer()}
+<script src="/assets/site.js?v=${ASSETS.js}" defer></script>
+</body>
+</html>
+`;
+}
+
 function renderPost(p) {
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`)}
 <body data-slug="${escAttr(p.slug)}">
@@ -510,6 +537,16 @@ function build() {
   }
 
   writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(posts), 'utf8');
+  writeFileSync(join(OUT_DIR, '404.html'), render404(), 'utf8');
+
+  // 舊網址 301 轉址
+  if (SITE.redirects.length) {
+    writeFileSync(
+      join(OUT_DIR, '_redirects'),
+      SITE.redirects.map(([from, to]) => `${from} ${to} 301`).join('\n') + '\n',
+      'utf8'
+    );
+  }
 
   for (const f of readdirSync(ASSETS_DIR)) copyFileSync(join(ASSETS_DIR, f), join(OUT_DIR, 'assets', f));
 

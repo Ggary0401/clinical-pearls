@@ -544,6 +544,29 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .back a { text-decoration: none; }
 .back a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
+/* ================================================================ 404 */
+
+.notfound { padding: clamp(4rem, 12vw, 7rem) 0 clamp(4rem, 10vw, 6rem); text-align: center; }
+.nf-code {
+  margin: 0 0 1rem;
+  font-family: var(--font-en);
+  font-size: clamp(3.5rem, 16vw, 5.5rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-indent: .16em;
+  color: var(--blue);
+}
+.nf-title {
+  margin: 0 0 .9rem;
+  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--navy);
+}
+.nf-text { margin: 0; color: var(--muted); font-size: .9375rem; }
+.notfound .back { margin-top: 2.5rem; }
+
 /* ================================================================ footer */
 
 .site-footer {
