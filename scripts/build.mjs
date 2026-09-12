@@ -294,6 +294,30 @@ function hashAssets() {
 }
 const assetUrl = (file) => `/assets/${file}${ASSET_HASHES[file] ? `?v=${ASSET_HASHES[file]}` : ''}`;
 
+/** 文章裡最先出現的視覺：圖片或影片，以在原文中的位置先後決定 */
+function findLeadVisual(body) {
+  const img = body.match(/^[ \t]*!\[([^\]]*)\]\(([^)\s]+)\)[ \t]*$/m);
+  const vid = body.match(/(?:youtube\.com\/watch\?(?:[^\s]*&)?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+
+  const imgAt = img ? img.index : Infinity;
+  const vidAt = vid ? vid.index : Infinity;
+  if (imgAt === Infinity && vidAt === Infinity) return null;
+
+  if (imgAt < vidAt) {
+    const raw = img[2];
+    const local = raw.match(/^\/assets\/([^?#]+)$/);
+    return { type: 'image', src: local ? assetUrl(local[1]) : raw, alt: img[1] };
+  }
+  return { type: 'video', id: vid[1] };
+}
+
+/** 分享預覽圖（og:image）：同樣取最先出現的視覺，需為絕對網址 */
+function ogImageFor(lead) {
+  if (!lead) return SITE.preview.src;
+  if (lead.type === 'video') return ytThumbSafe(lead.id);
+  return /^https?:\/\//.test(lead.src) ? lead.src : SITE.origin + lead.src;
+}
+
 /* ------------------------------------------------------------------ 版型 */
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -397,16 +421,22 @@ function renderIndex(posts) {
 
   const cards = posts
     .map((p, i) => {
-      // 影片縮圖只是預覽，點任何位置都是進入文章頁；影片在文章頁才能播放
-      const thumb = p.video
-        ? `<span class="card-thumb">
-              ${ytImgTag(p.video)}
+      // 縮圖只是預覽：點任何位置都是進入文章頁；影片要在文章頁才能播放
+      let thumb = '';
+      if (p.lead && p.lead.type === 'video') {
+        thumb = `<span class="card-thumb">
+              ${ytImgTag(p.lead.id)}
               <span class="card-play" aria-hidden="true">
                 <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
               </span>
             </span>
-            `
-        : '';
+            `;
+      } else if (p.lead && p.lead.type === 'image') {
+        thumb = `<span class="card-thumb">
+              <img src="${escAttr(p.lead.src)}" alt="" loading="lazy">
+            </span>
+            `;
+      }
       return `        <li class="card">
           <a class="card-link" href="/${escAttr(p.slug)}">
             ${thumb}<span class="card-body">
@@ -501,7 +531,7 @@ ${footer()}
 }
 
 function renderPost(p) {
-  const ogImage = p.video ? ytThumbSafe(p.video) : SITE.preview.src;
+  const ogImage = ogImageFor(p.lead);
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
 <body data-slug="${escAttr(p.slug)}">
 <a class="skip" href="#main">跳至主要內容</a>
@@ -552,8 +582,8 @@ function build() {
     const raw = readFileSync(join(POSTS_DIR, file), 'utf8');
     const { data, body } = parseFrontMatter(raw);
     const updated = resolveUpdated(`posts/${file}`, data);
-    // 取出第一支影片的 ID，供卡片縮圖與分享預覽圖使用
-    const vm = body.match(/(?:youtube\.com\/watch\?(?:[^\s]*&)?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+    // 取出文章裡「最先出現」的視覺（圖片或影片），供卡片縮圖與分享預覽圖使用
+    const lead = findLeadVisual(body);
     return {
       slug,
       title: data.title || slug,
@@ -561,7 +591,7 @@ function build() {
       summary: data.summary || '',
       date: data.date || updated,
       updated,
-      video: vm ? vm[1] : '',
+      lead,
       html: renderMarkdown(body),
     };
   });
