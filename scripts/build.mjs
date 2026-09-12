@@ -51,6 +51,16 @@ const SITE = {
       '韓國大邱 구병원 醫院進修',
     ],
   },
+  // 分享連結時的預覽圖（og:image）。CC BY 2.0，出處標示於頁尾。
+  preview: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
+    workTitle: 'The Stethoscope, Peru',
+    workUrl: 'https://commons.wikimedia.org/wiki/File:The_Stethoscope,_Peru.jpg',
+    creator: 'Alex Proimos',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+    sourceName: 'Wikimedia Commons',
+  },
   // 進站 Banner（本地圖片）
   hero: {
     file: 'banner.jpg',
@@ -271,7 +281,7 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
 
-function head(title, description, canonicalPath, image = heroAbs()) {
+function head(title, description, canonicalPath, image = SITE.preview.src) {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
 <head>
@@ -339,6 +349,11 @@ function footer() {
           <p class="foot-zh">${esc(SITE.subtitle)}</p>
         </div>
       </div>
+      <p class="credit">
+        分享預覽圖：<a href="${escAttr(SITE.preview.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.workTitle)}</a>
+        by ${esc(SITE.preview.creator)}，取自 ${esc(SITE.preview.sourceName)}，授權
+        <a href="${escAttr(SITE.preview.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.license)}</a>。
+      </p>
     </div>
     <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
     <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
@@ -467,7 +482,7 @@ ${footer()}
 }
 
 function renderPost(p) {
-  const ogImage = p.video ? ytThumbSafe(p.video) : heroAbs();
+  const ogImage = p.video ? ytThumbSafe(p.video) : SITE.preview.src;
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
 <body data-slug="${escAttr(p.slug)}">
 <a class="skip" href="#main">跳至主要內容</a>
