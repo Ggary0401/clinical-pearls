@@ -25,6 +25,8 @@ const SITE = {
   author: '林耿億醫師',
   description: '林耿億醫師的臨床筆記與心得整理。',
   lang: 'zh-Hant-TW',
+  // 正式網址（canonical / sitemap 用）
+  origin: 'https://drgarylin.com',
   // HERO 圖片（CC BY 2.0，出處標示於 footer）
   hero: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
@@ -214,10 +216,14 @@ function head(title, description, canonicalPath) {
 <title>${esc(title)}</title>
 <meta name="description" content="${escAttr(description)}">
 <meta name="author" content="${escAttr(SITE.author)}">
+<link rel="canonical" href="${escAttr(SITE.origin + canonicalPath)}">
 <meta property="og:title" content="${escAttr(title)}">
 <meta property="og:description" content="${escAttr(description)}">
 <meta property="og:type" content="${canonicalPath === '/' ? 'website' : 'article'}">
+<meta property="og:url" content="${escAttr(SITE.origin + canonicalPath)}">
+<meta property="og:site_name" content="${escAttr(SITE.title)}">
 <meta property="og:image" content="${escAttr(SITE.hero.src)}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 <link rel="stylesheet" href="/assets/style.css">
 </head>`;
@@ -371,14 +377,16 @@ function build() {
   for (const f of readdirSync(ASSETS_DIR)) copyFileSync(join(ASSETS_DIR, f), join(OUT_DIR, 'assets', f));
 
   // sitemap / robots（SEO 小加分）
-  const origin = process.env.SITE_ORIGIN || '';
-  if (origin) {
-    const urls = ['/', ...posts.map((p) => `/${p.slug}`)]
-      .map((u) => `  <url><loc>${origin}${u}</loc><lastmod>${u === '/' ? todayISO() : posts.find((p) => `/${p.slug}` === u).updated}</lastmod></url>`)
-      .join('\n');
-    writeFileSync(join(OUT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, 'utf8');
-    writeFileSync(join(OUT_DIR, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`, 'utf8');
-  }
+  const origin = SITE.origin;
+  const entries = [
+    { loc: '/', lastmod: posts.length ? posts[0].updated : todayISO() },
+    ...posts.map((p) => ({ loc: `/${p.slug}`, lastmod: p.updated })),
+  ];
+  const urls = entries
+    .map((e) => `  <url><loc>${origin}${e.loc}</loc><lastmod>${e.lastmod}</lastmod></url>`)
+    .join('\n');
+  writeFileSync(join(OUT_DIR, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, 'utf8');
+  writeFileSync(join(OUT_DIR, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`, 'utf8');
 
   console.log(`建置完成：${posts.length} 篇文章 -> public/`);
   for (const p of posts) console.log(`  /${p.slug}  發布 ${fmtDate(p.date)}  更新 ${fmtDate(p.updated)}  ${p.title}`);
