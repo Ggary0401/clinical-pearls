@@ -316,12 +316,32 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 2rem 1.75rem 1.75rem;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
   position: relative;
   transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
 }
+.card-body { display: block; padding: 1.75rem; }
+
+/* 影片縮圖：僅為預覽，點擊任何位置都是進入文章頁 */
+.card-thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--navy-deep);
+  overflow: hidden;
+}
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.card-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3.25rem;
+}
+.card-play svg { width: 100%; height: auto; }
+.card-link:hover .card-play .video-play-bg { fill: #c00; opacity: 1; }
 .card-link:hover {
   box-shadow: var(--shadow);
   transform: translateY(-2px);

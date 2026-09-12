@@ -264,7 +264,7 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
 
-function head(title, description, canonicalPath) {
+function head(title, description, canonicalPath, image = SITE.hero.src) {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
 <head>
@@ -279,7 +279,7 @@ function head(title, description, canonicalPath) {
 <meta property="og:type" content="${canonicalPath === '/' ? 'website' : 'article'}">
 <meta property="og:url" content="${escAttr(SITE.origin + canonicalPath)}">
 <meta property="og:site_name" content="${escAttr(SITE.title)}">
-<meta property="og:image" content="${escAttr(SITE.hero.src)}">
+<meta property="og:image" content="${escAttr(image)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 ${FONTS}
@@ -321,8 +321,15 @@ ${items.map((t) => `            <li>${esc(t)}</li>`).join('\n')}
         </div>`;
 }
 
-function footer() {
+function footer(showImageCredit = true) {
   const h = SITE.hero;
+  const credit = showImageCredit
+    ? `<p class="credit">
+        HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
+        by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
+        <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
+      </p>`
+    : '';
   return `<footer class="site-footer">
   <div class="wrap">
     <div class="foot-top">
@@ -333,11 +340,7 @@ function footer() {
           <p class="foot-zh">${esc(SITE.subtitle)}</p>
         </div>
       </div>
-      <p class="credit">
-        HERO 圖片：<a href="${escAttr(h.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.workTitle)}</a>
-        by ${esc(h.creator)}，取自 ${esc(h.sourceName)}，授權
-        <a href="${escAttr(h.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(h.license)}</a>。
-      </p>
+      ${credit}
     </div>
     <p class="disclaimer">本站為 ${esc(SITE.author)} 的個人臨床筆記，僅供醫學教育與經驗交流，<strong>不構成醫療建議</strong>，亦不能取代專業診療。如有健康問題請諮詢您的主治醫師。</p>
     <p class="copyright">© ${new Date().getFullYear()} ${esc(SITE.author)} · ${esc(SITE.title)}</p>
@@ -369,17 +372,29 @@ function renderIndex(posts) {
   const latest = posts.length ? posts[0].updated : todayISO();
 
   const cards = posts
-    .map(
-      (p, i) => `        <li class="card">
+    .map((p, i) => {
+      // 影片縮圖只是預覽，點任何位置都是進入文章頁；影片在文章頁才能播放
+      const thumb = p.video
+        ? `<span class="card-thumb">
+              <img src="https://i.ytimg.com/vi/${escAttr(p.video)}/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy">
+              <span class="card-play" aria-hidden="true">
+                <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+              </span>
+            </span>
+            `
+        : '';
+      return `        <li class="card">
           <a class="card-link" href="/${escAttr(p.slug)}">
-            <span class="card-no">${String(i + 1).padStart(2, '0')}</span>
-            <h3 class="card-title">${esc(p.title)}</h3>
-            <p class="card-summary">${esc(p.summary)}</p>
-            ${metaRow(p)}
-            <span class="card-more">閱讀筆記 <span aria-hidden="true">→</span></span>
+            ${thumb}<span class="card-body">
+              <span class="card-no">${String(i + 1).padStart(2, '0')}</span>
+              <h3 class="card-title">${esc(p.title)}</h3>
+              <p class="card-summary">${esc(p.summary)}</p>
+              <p class="meta"><span class="byline">${esc(p.author)}</span></p>
+              <span class="card-more">閱讀筆記 <span aria-hidden="true">→</span></span>
+            </span>
           </a>
-        </li>`
-    )
+        </li>`;
+    })
     .join('\n');
 
   return `${head(`${SITE.title} · ${SITE.subtitle}`, SITE.description, '/')}
@@ -463,7 +478,8 @@ ${footer()}
 }
 
 function renderPost(p) {
-  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`)}
+  const ogImage = p.video ? `https://i.ytimg.com/vi/${p.video}/maxresdefault.jpg` : SITE.hero.src;
+  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
 <body data-slug="${escAttr(p.slug)}">
 <a class="skip" href="#main">跳至主要內容</a>
 ${siteHeader()}
@@ -479,9 +495,6 @@ ${siteHeader()}
 
   <article class="post">
     <div class="wrap-narrow">
-      <figure class="post-hero">
-        <img src="${escAttr(SITE.hero.src)}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
-      </figure>
       <div class="post-body">
 ${p.html}
       </div>
@@ -490,7 +503,7 @@ ${p.html}
   </article>
 
 </main>
-${footer()}
+${footer(!p.video)}
 <script src="/assets/site.js?v=${ASSETS.js}" defer></script>
 </body>
 </html>
@@ -516,6 +529,8 @@ function build() {
     const raw = readFileSync(join(POSTS_DIR, file), 'utf8');
     const { data, body } = parseFrontMatter(raw);
     const updated = resolveUpdated(`posts/${file}`, data);
+    // 取出第一支影片的 ID，供卡片縮圖與分享預覽圖使用
+    const vm = body.match(/(?:youtube\.com\/watch\?(?:[^\s]*&)?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
     return {
       slug,
       title: data.title || slug,
@@ -523,6 +538,7 @@ function build() {
       summary: data.summary || '',
       date: data.date || updated,
       updated,
+      video: vm ? vm[1] : '',
       html: renderMarkdown(body),
     };
   });
