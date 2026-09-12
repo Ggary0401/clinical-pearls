@@ -21,7 +21,7 @@ const OUT_DIR = join(ROOT, 'public');
 /* ------------------------------------------------------------------ 站台設定 */
 
 const SITE = {
-  title: 'Clinical Pearls',
+  title: "Kylin's Note",
   subtitle: '林耿億醫師的醫療筆記',
   author: '林耿億醫師',
   description: '林耿億醫師的臨床筆記與心得整理。',
@@ -252,7 +252,7 @@ function siteHeader() {
   return `<header class="site-header">
   <div class="wrap head-inner">
     <a class="brand" href="/">
-      <span class="brand-mark" aria-hidden="true">CP</span>
+      <span class="brand-mark" aria-hidden="true">KYL</span>
       <span class="brand-text">
         <span class="brand-en">${esc(SITE.title)}</span>
         <span class="brand-zh">${esc(SITE.subtitle)}</span>
@@ -277,7 +277,7 @@ function footer() {
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-brand">
-        <span class="brand-mark" aria-hidden="true">CP</span>
+        <span class="brand-mark" aria-hidden="true">KYL</span>
         <div>
           <p class="foot-en">${esc(SITE.title)}</p>
           <p class="foot-zh">${esc(SITE.subtitle)}</p>
@@ -299,7 +299,7 @@ function footer() {
 function wordBand() {
   return `<section class="band" aria-hidden="true">
   <img src="${escAttr(SITE.hero.src)}" alt="" loading="lazy">
-  <p class="band-text">CLINICAL PEARLS</p>
+  <p class="band-text">KYLIN&#39;S NOTE</p>
 </section>`;
 }
 
@@ -341,9 +341,9 @@ ${siteHeader()}
   <section class="hero">
     <img class="hero-img" src="${escAttr(SITE.hero.src)}" width="${SITE.hero.width}" height="${SITE.hero.height}" alt="${escAttr(SITE.hero.alt)}" fetchpriority="high">
     <div class="hero-inner wrap">
-      <p class="hero-kicker">臨床所學，寫成日後找得回來的形式</p>
+      <p class="hero-kicker">那些教科書沒有寫完的臨床經驗</p>
       <h1 class="hero-title">林耿億醫師的<br>醫療筆記</h1>
-      <p class="hero-script">Clinical Pearls</p>
+      <p class="hero-script">Kylin&#39;s Note</p>
     </div>
   </section>
 

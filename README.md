@@ -1,4 +1,4 @@
-# Clinical Pearls · 林耿億醫師的醫療筆記
+# Kylin's Note · 林耿億醫師的醫療筆記
 
 用 Markdown 寫筆記，`npm run build` 產生純靜態 HTML，推上 GitHub 後由 Cloudflare Pages 自動部署。
 

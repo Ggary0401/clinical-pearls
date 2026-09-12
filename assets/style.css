@@ -105,16 +105,18 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 
 .brand-mark {
   flex: none;
-  width: 2.1rem;
+  min-width: 2.1rem;          /* 三字母標記，寬度隨內容延展但不小於此 */
   height: 2.1rem;
+  padding-inline: .45rem;
   display: grid;
   place-items: center;
   background: var(--navy);
   color: #fff;
   font-family: var(--font-en);
-  font-size: .8rem;
+  font-size: .72rem;
   font-weight: 500;
-  letter-spacing: .06em;
+  letter-spacing: .08em;
+  text-indent: .08em;          /* 補掉字距造成的右側空白，讓字真正置中 */
 }
 
 .brand-text { display: flex; flex-direction: column; line-height: 1.3; }

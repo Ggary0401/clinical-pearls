@@ -2,7 +2,7 @@
   "name": "clinical-pearls",
   "version": "1.0.0",
   "private": true,
-  "description": "林耿億醫師的醫療筆記 · Clinical Pearls",
+  "description": "林耿億醫師的醫療筆記 · Kylin's Note",
   "type": "module",
   "engines": {
     "node": ">=18"
