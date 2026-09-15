@@ -190,7 +190,7 @@ function renderMarkdown(md, isRoot = true) {
       const id = yt[1];
       out.push(`<div class="video">
   <a class="video-facade" href="https://www.youtube.com/watch?v=${id}" data-yt="${id}" aria-label="播放影片">
-    ${ytImgTag(id)}
+    ${ytImgTag(id, ' crossorigin="anonymous"')}
     <span class="video-play" aria-hidden="true">
       <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
     </span>

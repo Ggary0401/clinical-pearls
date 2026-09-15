@@ -1,8 +1,4 @@
-/* 瀏覽計數器前端
-   - 文章頁：每個瀏覽器分頁計 1 次（sessionStorage 去重），避免重整灌水
-   - 首頁卡片：只讀取不累加
-   - 後端掛掉時靜默降級顯示「—」，不影響閱讀 */
-/* 卡片縮圖處理
+/* 縮圖處理（首頁卡片與文章內影片）
    1. YouTube 縮圖升級：預設載入必定存在的 hqdefault（480x360），
       確認該影片真的有 maxresdefault（1280x720）才換上去 —— 缺少時 YouTube
       會回 404 並夾帶 120x90 佔位圖，直接使用會變成模糊小圖被拉大。
@@ -71,7 +67,7 @@
     else img.addEventListener('load', fn, { once: true });
   }
 
-  var thumbs = document.querySelectorAll('.card-thumb img');
+  var thumbs = document.querySelectorAll('.card-thumb img, .video-facade img');
 
   for (var i = 0; i < thumbs.length; i++) {
     (function (img) {
@@ -122,6 +118,10 @@
   }
 })();
 
+/* 瀏覽計數器
+   - 文章頁：每個瀏覽器分頁計 1 次（sessionStorage 去重），避免重整灌水
+   - 首頁卡片：只讀取不累加
+   - 後端掛掉時靜默降級顯示「—」，不影響閱讀 */
 (function () {
   'use strict';
 

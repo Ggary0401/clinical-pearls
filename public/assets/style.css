@@ -67,6 +67,9 @@ body {
   /* 防破格：長網址、長英文字串一律斷行 */
   overflow-wrap: break-word;
   word-break: break-word;
+  /* 讓滿版元素可以超出版心而不產生橫向捲軸。
+     用 clip 而非 hidden：hidden 會讓 body 變成捲動容器，站頭的 sticky 會失效。 */
+  overflow-x: clip;
 }
 
 img, svg, video { max-width: 100%; height: auto; display: block; }
@@ -473,6 +476,17 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .post-figure { margin: 2rem 0; }
 .post-figure img { margin: 0; }
 .post-body > .post-figure:first-child { margin-top: 0; }
+
+/* 影片與單獨成段的圖片一律滿版（貼齊螢幕左右邊緣） */
+.post-body > .video,
+.post-body > .post-figure {
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+}
+.post-body > .video,
+.post-body > .post-figure img { border-radius: 0; }
 
 /* 影片：先只載縮圖，點擊後原地換成播放器 */
 .video {
