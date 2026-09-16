@@ -217,7 +217,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   gap: 0 clamp(.35rem, 1.9vw, 1.25rem);
   min-height: 3.25rem;
   font-family: var(--font-en);
-  font-size: clamp(.5rem, 2.7vw, .75rem);
+  font-size: clamp(.5625rem, 3.2vw, .75rem);
   letter-spacing: clamp(0em, .35vw, .16em);
 }
 .strip-sep { width: 1px; height: .85rem; background: currentColor; opacity: .35; }
@@ -460,6 +460,13 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   border-radius: var(--radius);
 }
 
+/* 文章內文放大到 1.2rem（19.2px），行高維持 2 倍。
+   標題用 rem 定尺寸，不受這裡影響。 */
+.post-body {
+  font-size: 1.2rem;
+  line-height: 2;
+  letter-spacing: .026em;
+}
 .post-body > :first-child { margin-top: 0; }
 
 .post-body h2 {
