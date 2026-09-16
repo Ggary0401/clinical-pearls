@@ -33,6 +33,12 @@ const SITE = {
     ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
     ['/20260905-writing-format', '/20260905-two-worlds'],
   ],
+  // 每篇文章結尾自動附上的診所連結（不要寫進 posts/*.md，改這裡就全站生效）
+  clinic: [
+    ['康澄診所', 'https://www.procto-clinic.com/%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1.html'],
+    ['由此去', 'https://www.google.com/maps/place/%E5%BA%B7%E6%BE%84%E8%A8%BA%E6%89%80-%E5%8F%B0%E4%B8%AD%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1%E6%89%8B%E8%A1%93%E4%B8%AD%E5%BF%83/@24.1441706,120.6529023,1829m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34693d54ebdce08d:0xe062af7bf5fe254b!8m2!3d24.1441706!4d120.6529023!16s%2Fg%2F11f8hw6qj9!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D'],
+    ['線上掛號', 'https://line.me/R/ti/p/@idb6828q'],
+  ],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
     education: [
@@ -534,6 +540,13 @@ ${footer()}
 `;
 }
 
+/** 文章結尾的診所連結。每篇自動附上，不需要（也不要）寫在 posts/*.md 裡。
+ *  這裡的網址取自 SITE.clinic，沒有經過 esc()，所以要跳脫一次。 */
+const clinicLinks = () =>
+  `<p class="clinic">${SITE.clinic
+    .map(([t, href]) => `<a href="${escAttr(href)}" target="_blank" rel="noopener noreferrer">${esc(t)}</a>`)
+    .join('<br>')}</p>`;
+
 function renderPost(p) {
   const ogImage = ogImageFor(p.lead);
   return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
@@ -554,6 +567,7 @@ ${siteHeader()}
     <div class="wrap-narrow">
       <div class="post-body">
 ${p.html}
+${clinicLinks()}
       </div>
       <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到全部筆記</a></p>
     </div>

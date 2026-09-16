@@ -70,7 +70,3 @@ https://www.youtube.com/watch?v=38tRSCKexvM
 不同的階段，不同的世界。
 
 你可以不一樣
-
-[康澄診所](https://www.procto-clinic.com/%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1.html)
-[由此去](https://www.google.com/maps/place/%E5%BA%B7%E6%BE%84%E8%A8%BA%E6%89%80-%E5%8F%B0%E4%B8%AD%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1%E6%89%8B%E8%A1%93%E4%B8%AD%E5%BF%83/@24.1441706,120.6529023,1829m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34693d54ebdce08d:0xe062af7bf5fe254b!8m2!3d24.1441706!4d120.6529023!16s%2Fg%2F11f8hw6qj9!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D)
-[線上掛號](https://line.me/R/ti/p/@idb6828q)
