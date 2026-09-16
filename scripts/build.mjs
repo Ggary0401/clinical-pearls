@@ -33,6 +33,15 @@ const SITE = {
     ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
     ['/20260905-writing-format', '/20260905-two-worlds'],
   ],
+  // 首頁那排分類入口，順序就是顯示順序。每個分類會產生一個 /<slug> 頁面。
+  //   kind: 'about' -> 放學經歷那一區；其餘 -> 列出 category 指到這個 slug 的文章
+  // 文章要歸到哪一類，寫在 posts/*.md 的 front matter：category: endoscopy
+  sections: [
+    { slug: 'about', zh: '關於我', en: 'ABOUT', kind: 'about' },
+    { slug: 'hemorrhoid', zh: '微創痔瘡', en: 'HEMORRHOID' },
+    { slug: 'endoscopy', zh: '無痛腸胃鏡', en: 'ENDOSCOPY' },
+    { slug: 'gut-health', zh: '腸道菌叢與抗老', en: 'GUT HEALTH' },
+  ],
   // 每篇文章結尾自動附上的診所連結（不要寫進 posts/*.md，改這裡就全站生效）
   clinic: [
     ['康澄診所', 'https://www.procto-clinic.com/%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1.html'],
@@ -368,7 +377,7 @@ function siteHeader() {
         <span class="brand-zh">${esc(SITE.subtitle)}</span>
       </span>
     </a>
-    <a class="pill" href="/#notes">全部筆記</a>
+    <a class="pill" href="/#notes">最新筆記</a>
   </div>
 </header>`;
 }
@@ -389,6 +398,39 @@ function cvGroup(zh, en, items) {
 ${items.map((t) => `            <li>${esc(t)}</li>`).join('\n')}
           </ul>
         </div>`;
+}
+
+/** 分類列（首頁與分類頁共用，取代原本「共 N 篇筆記」那一條） */
+function navStrip(activeSlug = '') {
+  const items = SITE.sections
+    .map((s) => {
+      const cur = s.slug === activeSlug;
+      return `<a class="strip-link${cur ? ' is-current' : ''}" href="/${escAttr(s.slug)}"${cur ? ' aria-current="page"' : ''}>${esc(s.zh)}</a>`;
+    })
+    .join('\n      <span class="strip-sep" aria-hidden="true"></span>\n      ');
+  return `  <nav class="strip" aria-label="分類">
+    <div class="wrap strip-inner">
+      ${items}
+    </div>
+  </nav>`;
+}
+
+/** 關於我：人像 + 學經歷。原本在首頁，現在收在 /about */
+function aboutSection() {
+  return `  <section class="about">
+    <div class="wrap about-grid">
+      ${sectionTitle('ABOUT', '關於我')}
+      <div class="about-body">
+        <figure class="portrait">
+          <img src="${assetUrl('portrait.jpg')}" width="675" height="900" alt="${escAttr(SITE.author)}" loading="lazy">
+        </figure>
+        <div class="cv">
+          ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
+          ${cvGroup('經歷', 'EXPERIENCE', SITE.cv.experience)}
+        </div>
+      </div>
+    </div>
+  </section>`;
 }
 
 function footer() {
@@ -426,10 +468,9 @@ function metaRow(p) {
     </p>`;
 }
 
-function renderIndex(posts) {
-  const latest = posts.length ? posts[0].updated : todayISO();
-
-  const cards = posts
+/** 文章卡片清單（首頁與分類頁共用）。href 一律是 /<slug>，網址不因分類而改變。 */
+function cardsHtml(posts) {
+  return posts
     .map((p, i) => {
       // 縮圖只是預覽：點任何位置都是進入文章頁；影片要在文章頁才能播放
       let thumb = '';
@@ -460,7 +501,13 @@ function renderIndex(posts) {
         </li>`;
     })
     .join('\n');
+}
 
+/** 首頁最多列幾篇最新筆記（完整清單在各分類頁） */
+const HOME_LATEST = 3;
+
+/** 首頁：Hero + 分類列 + 最新筆記。關於我與完整清單都收在各自的分類頁。 */
+function renderIndex(posts) {
   return `${head(`${SITE.title} · ${SITE.subtitle}`, SITE.description, '/')}
 <body>
 <a class="skip" href="#main">跳至主要內容</a>
@@ -476,38 +523,67 @@ ${siteHeader()}
     </div>
   </section>
 
-  <div class="strip">
-    <div class="wrap strip-inner">
-      <span>共 ${posts.length} 篇筆記</span>
-      <span class="strip-sep" aria-hidden="true"></span>
-      <span>最後更新 ${fmtDate(latest)}</span>
-    </div>
-  </div>
-
-  <section class="about">
-    <div class="wrap about-grid">
-      ${sectionTitle('ABOUT', '關於我')}
-      <div class="about-body">
-        <figure class="portrait">
-          <img src="${assetUrl('portrait.jpg')}" width="675" height="900" alt="${escAttr(SITE.author)}" loading="lazy">
-        </figure>
-        <div class="cv">
-          ${cvGroup('學歷', 'EDUCATION', SITE.cv.education)}
-          ${cvGroup('經歷', 'EXPERIENCE', SITE.cv.experience)}
-        </div>
-      </div>
-    </div>
-  </section>
+${navStrip()}
 
   <section class="notes">
     <div class="wrap">
-      ${sectionTitle('NOTES', '全部筆記', 'notes')}
+      ${sectionTitle('NOTES', '最新筆記', 'notes')}
       <ul class="cards">
-${cards}
+${cardsHtml(posts.slice(0, HOME_LATEST))}
       </ul>
     </div>
   </section>
 
+
+</main>
+${footer()}
+<script src="${assetUrl('site.js')}" defer></script>
+</body>
+</html>
+`;
+}
+
+/** 文章底部的返回連結：回到所屬分類，沒寫分類就回首頁 */
+function postBack(p) {
+  const s = SITE.sections.find((x) => x.slug === p.category && x.kind !== 'about');
+  const href = s ? `/${s.slug}` : '/';
+  const label = s ? `回到${s.zh}` : '回到首頁';
+  return `<p class="back"><a href="${escAttr(href)}"><span aria-hidden="true">←</span> ${esc(label)}</a></p>`;
+}
+
+/** 分類頁 /<slug>。只是換一個入口列出文章，文章本身的網址完全不受影響。 */
+function renderSection(section, posts) {
+  const isAbout = section.kind === 'about';
+  const desc = isAbout
+    ? `${SITE.author}的學歷與經歷。`
+    : `${SITE.author}的${section.zh}相關筆記。`;
+
+  const body = isAbout
+    ? aboutSection()
+    : `  <section class="notes">
+    <div class="wrap">
+      ${sectionTitle(section.en, section.zh)}
+${
+  posts.length
+    ? `      <ul class="cards">\n${cardsHtml(posts)}\n      </ul>`
+    : `      <p class="sec-empty">這個分類還沒有筆記，之後會陸續補上。</p>`
+}
+    </div>
+  </section>`;
+
+  return `${head(`${section.zh} · ${SITE.title}`, desc, `/${section.slug}`)}
+<body>
+<a class="skip" href="#main">跳至主要內容</a>
+${siteHeader()}
+<main id="main">
+
+${navStrip(section.slug)}
+
+${body}
+
+  <div class="wrap-narrow">
+    <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到首頁</a></p>
+  </div>
 
 </main>
 ${footer()}
@@ -569,7 +645,7 @@ ${siteHeader()}
 ${p.html}
 ${clinicLinks()}
       </div>
-      <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到全部筆記</a></p>
+      ${postBack(p)}
     </div>
   </article>
 
@@ -609,10 +685,18 @@ function build() {
       summary: data.summary || '',
       date: data.date || updated,
       updated,
+      category: data.category || '',
       lead,
       html: renderMarkdown(body),
     };
   });
+
+  // 分類寫錯或漏寫時要看得見：文章仍會產生頁面，只是不會出現在任何分類頁
+  const known = new Set(SITE.sections.filter((s) => s.kind !== 'about').map((s) => s.slug));
+  for (const p of posts) {
+    if (!p.category) console.warn(`  ⚠ ${p.slug} 沒有寫 category，不會出現在任何分類頁`);
+    else if (!known.has(p.category)) console.warn(`  ⚠ ${p.slug} 的 category「${p.category}」不在 SITE.sections 裡`);
+  }
 
   // 最新的在前：先比更新日，再比發布日
   posts.sort((a, b) => (b.updated.localeCompare(a.updated)) || (b.date.localeCompare(a.date)) || b.slug.localeCompare(a.slug));
@@ -621,6 +705,13 @@ function build() {
     const dir = join(OUT_DIR, p.slug);
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, 'index.html'), renderPost(p), 'utf8');
+  }
+
+  // 分類頁。slug 都是英文短字，跟文章的日期開頭 slug 不會撞名
+  for (const s of SITE.sections) {
+    const dir = join(OUT_DIR, s.slug);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'index.html'), renderSection(s, posts.filter((p) => p.category === s.slug)), 'utf8');
   }
 
   writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(posts), 'utf8');
@@ -639,8 +730,13 @@ function build() {
 
   // sitemap / robots（SEO 小加分）
   const origin = SITE.origin;
+  const siteLastmod = posts.length ? posts[0].updated : todayISO();
   const entries = [
-    { loc: '/', lastmod: posts.length ? posts[0].updated : todayISO() },
+    { loc: '/', lastmod: siteLastmod },
+    ...SITE.sections.map((s) => {
+      const own = posts.filter((p) => p.category === s.slug);
+      return { loc: `/${s.slug}`, lastmod: own.length ? own[0].updated : siteLastmod };
+    }),
     ...posts.map((p) => ({ loc: `/${p.slug}`, lastmod: p.updated })),
   ];
   const urls = entries

@@ -217,7 +217,25 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   font-size: .75rem;
   letter-spacing: .16em;
 }
-.strip-sep { width: 1px; height: .85rem; background: rgba(255, 255, 255, .35); }
+.strip-sep { width: 1px; height: .85rem; background: currentColor; opacity: .35; }
+
+/* 橫條裡的分類連結。全域 a 是 --navy，在這條橫條上會看不見，
+   所以一律跟著 .strip 的文字色走（深淺色模式各自正確）。 */
+.strip-link {
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: .15rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s ease;
+}
+.strip-link:hover,
+.strip-link:focus-visible,
+.strip-link.is-current { border-bottom-color: currentColor; }
+
+/* 深色模式下 --navy 是淺藍，底色跟著變淺，白字就糊了 -> 改用深色文字 */
+@media (prefers-color-scheme: dark) {
+  .strip { color: var(--navy-deep); }
+}
 
 /* ================================================================ 區塊標題 */
 
@@ -237,6 +255,9 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   letter-spacing: .16em;
   color: var(--muted);
 }
+
+/* 分類頁還沒有文章時的替代文字 */
+.sec-empty { margin: 0; color: var(--muted); }
 
 /* ================================================================ ABOUT */
 

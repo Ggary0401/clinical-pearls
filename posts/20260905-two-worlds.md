@@ -2,6 +2,7 @@
 title: 兩個世界
 date: 2026-09-05
 author: 林耿億醫師
+category: endoscopy
 summary: 同一個下午、同一種主訴，兩位患者走進診間。一位還能當天切除，一位已經不是一句「痔瘡」可以帶過。
 ---
 
