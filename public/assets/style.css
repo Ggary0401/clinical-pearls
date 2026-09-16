@@ -237,6 +237,18 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   .strip { color: var(--navy-deep); }
 }
 
+/* 窄螢幕：四個分類要排在同一行，用字距與間距換寬度。
+   nowrap 換來的是絕不能溢出，改字數或字級時要回頭量 375px。 */
+@media (max-width: 30rem) {
+  .strip-inner {
+    flex-wrap: nowrap;
+    gap: 0 .45rem;
+    font-size: .625rem;
+    letter-spacing: .02em;
+  }
+  .strip-link { white-space: nowrap; }
+}
+
 /* ================================================================ 區塊標題 */
 
 .sec-head { margin-bottom: 2.5rem; }
