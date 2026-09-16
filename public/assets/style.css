@@ -210,12 +210,15 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: .5rem 1.25rem;
+  /* 分類一律排成一行。不用斷點，字級/字距/間距隨視窗連續縮放，
+     所以不會有「某個寬度剛好漏掉」而折行的情況。
+     動這三個 clamp 或增加分類時，要回頭量最窄的螢幕有沒有溢出。 */
+  flex-wrap: nowrap;
+  gap: 0 clamp(.35rem, 1.9vw, 1.25rem);
   min-height: 3.25rem;
   font-family: var(--font-en);
-  font-size: .75rem;
-  letter-spacing: .16em;
+  font-size: clamp(.5rem, 2.7vw, .75rem);
+  letter-spacing: clamp(0em, .35vw, .16em);
 }
 .strip-sep { width: 1px; height: .85rem; background: currentColor; opacity: .35; }
 
@@ -237,17 +240,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
   .strip { color: var(--navy-deep); }
 }
 
-/* 窄螢幕：四個分類要排在同一行，用字距與間距換寬度。
-   nowrap 換來的是絕不能溢出，改字數或字級時要回頭量 375px。 */
-@media (max-width: 30rem) {
-  .strip-inner {
-    flex-wrap: nowrap;
-    gap: 0 .45rem;
-    font-size: .625rem;
-    letter-spacing: .02em;
-  }
-  .strip-link { white-space: nowrap; }
-}
+.strip-link { white-space: nowrap; }
 
 /* ================================================================ 區塊標題 */
 
