@@ -141,15 +141,18 @@ function inline(text) {
         return `<code>${esc(part.slice(1, -1))}</code>`;
       }
       let s = esc(part);
+      // 注意：以下的 alt / src / href 都取自上面已經 esc() 過的 s，不可以再跳脫一次，
+      // 否則網址裡的 & 會變成 &amp;amp;，查詢參數就壞了。
+      // 只有 assetUrl() 新產生的字串沒經過 esc()，那個才需要跳脫。
       s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => {
         const local = src.match(/^\/assets\/([^?#]+)$/);
-        const url = local ? assetUrl(local[1]) : src;
-        return `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy">`;
+        const url = local ? escAttr(assetUrl(local[1])) : src;
+        return `<img src="${url}" alt="${alt}" loading="lazy">`;
       });
       s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => {
         const ext = /^https?:\/\//.test(href);
         const rel = ext ? ' target="_blank" rel="noopener noreferrer"' : '';
-        return `<a href="${escAttr(href)}"${rel}>${t}</a>`;
+        return `<a href="${href}"${rel}>${t}</a>`;
       });
       s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
