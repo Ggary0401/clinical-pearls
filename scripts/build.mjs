@@ -277,7 +277,8 @@ function renderMarkdown(md, isRoot = true) {
       !/^\s*(-{3,}|\*{3,})\s*$/.test(lines[i]) &&
       !YT.test(lines[i])
     ) buf.push(lines[i++]);
-    if (buf.length) out.push(`<p>${inline(buf.join(' '))}</p>`);
+    // 段落內的每個換行都保留（一行就是一行），要分段仍然用空行
+    if (buf.length) out.push(`<p>${buf.map((l) => inline(l)).join('<br>')}</p>`);
   }
 
   return out.join('\n');
