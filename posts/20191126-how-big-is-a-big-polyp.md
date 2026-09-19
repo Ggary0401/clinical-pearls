@@ -3,7 +3,7 @@ title: 息肉多大才算大？
 date: 2019-11-26
 author: 林耿億醫師
 category: endoscopy
-summary: 診所執業以來，常常遇到很大顆的息肉，以前在醫院都沒遇到這麼大顆的，我自己也很訝異，不過，我們覺得大的息肉。
+summary: 醫師看息肉只在意兩件事：息肉本身的大小，以及與腸壁的接觸面積。1 公分的息肉就有百分之一藏有癌細胞。切除風險與延遲性出血說明。
 ---
 
 https://www.youtube.com/watch?v=yRY0SEIFhCw
@@ -42,7 +42,7 @@ https://www.youtube.com/watch?v=yRY0SEIFhCw
 
 我認爲不算小
 
-![](/assets/how-big-is-a-big-polyp-1.jpg)
+![腸壁上扁平息肉與有柄息肉的對照示意圖](/assets/how-big-is-a-big-polyp-1.jpg)
 
 第二：息肉跟腸壁的接觸面積
 

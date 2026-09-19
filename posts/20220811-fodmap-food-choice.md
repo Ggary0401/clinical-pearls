@@ -3,10 +3,10 @@ title: 高低腹敏食物的選擇
 date: 2022-08-11
 author: 林耿億醫師
 category: endoscopy
-summary: 「低腹敏飲食」改善腸躁症，近10年來國際間逐漸推廣低腹敏飲食，「腹敏」一詞取自FODMAPs的諧音，指的是可能造成腸胃敏感的特定類型碳水化合物。
+summary: 低腹敏（FODMAP）飲食改善腸躁症已有多項研究證實。哪些屬於高腹敏食物、哪些可以安心吃，以及四到六週的飲食調整方式。
 ---
 
-![](/assets/fodmap-food-choice-1.jpg)
+![高腹敏與低腹敏食物的分類對照表](/assets/fodmap-food-choice-1.jpg)
 
 「低腹敏飲食」改善腸躁症
 

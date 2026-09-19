@@ -3,10 +3,10 @@ title: 痔瘡怎麼治療
 date: 2018-08-02
 author: 林耿億醫師
 category: hemorrhoid
-summary: 熱騰騰的痔瘡治療準則，終於在2018年3月的直腸外科聖經ASCRS發表了，讓我們簡單快速的帶過，如何治療痔瘡。
+summary: 依 2018 年 ASCRS 痔瘡治療準則整理：先確定是痔瘡並排除大腸癌，第一、二度可先藥物與生活調整，再依嚴重度選擇結紮或手術。
 ---
 
-![](/assets/hemorrhoid-treatment-1.jpg)
+![一隻法國鬥牛犬，圖上有「痔瘡怎麼治療」字樣](/assets/hemorrhoid-treatment-1.jpg)
 
 熱騰騰的痔瘡治療準則
 

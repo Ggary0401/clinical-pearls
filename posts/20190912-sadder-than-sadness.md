@@ -3,7 +3,7 @@ title: 比悲傷更悲傷的故事
 date: 2019-09-12
 author: 林耿億醫師
 category: endoscopy
-summary: 「我想要掛號。」老沈是一位 50 多歲男性，禮拜一早上到診所，神色有點慌張。「好，今天哪裡不舒服？」
+summary: 50 多歲男性堅持自己只是痔瘡流血，指診卻隱隱摸到硬塊。說服他接受大腸鏡後，在直腸與乙狀結腸發現兩顆相當大的息肉。
 ---
 
 https://www.youtube.com/watch?v=YyTA0pX4kto

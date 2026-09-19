@@ -343,7 +343,7 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
 
-function head(title, description, canonicalPath, image = SITE.preview.src) {
+function head(title, description, canonicalPath, image = SITE.preview.src, extra = '') {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
 <head>
@@ -363,7 +363,49 @@ function head(title, description, canonicalPath, image = SITE.preview.src) {
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 ${FONTS}
 <link rel="stylesheet" href="${assetUrl('style.css')}">
-</head>`;
+${extra}</head>`;
+}
+
+/* --------------------------------------------------- 結構化資料（JSON-LD） */
+
+/** 作者兼發布者。搜尋引擎靠這個把文章掛到同一個人身上。 */
+const LD_AUTHOR = { '@type': 'Person', name: SITE.author, url: SITE.origin };
+
+/** JSON-LD 內容不能出現原樣的 `<`，否則會提前結束 script */
+const ldScript = (obj) =>
+  `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, '\\u003c')}</script>`;
+
+/** 文章頁：BlogPosting + 麵包屑 */
+function postLd(p) {
+  const url = `${SITE.origin}/${p.slug}`;
+  const sec = SITE.sections.find((s) => s.slug === p.category);
+  const crumbs = [{ name: '首頁', item: SITE.origin }];
+  if (sec) crumbs.push({ name: sec.zh, item: `${SITE.origin}/${sec.slug}` });
+  crumbs.push({ name: p.title, item: url });
+  return [
+    ldScript({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: p.title,
+      description: p.summary,
+      image: [ogImageFor(p.lead)],
+      datePublished: p.date,
+      dateModified: p.updated,
+      author: LD_AUTHOR,
+      publisher: LD_AUTHOR,
+      inLanguage: SITE.lang,
+      ...(sec ? { articleSection: sec.zh } : {}),
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      url,
+    }),
+    ldScript({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem', position: i + 1, name: c.name, item: c.item,
+      })),
+    }),
+  ].join('\n');
 }
 
 /** 站頭：左側品牌標記，右側膠囊按鈕（參考站的 CI 結構） */
@@ -625,8 +667,12 @@ const clinicLinks = () =>
 
 function renderPost(p) {
   const ogImage = ogImageFor(p.lead);
-  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage)}
+  const timeMeta =
+    `<meta property="article:published_time" content="${escAttr(p.date)}">\n` +
+    `<meta property="article:modified_time" content="${escAttr(p.updated)}">\n`;
+  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage, timeMeta)}
 <body data-slug="${escAttr(p.slug)}">
+${postLd(p)}
 <a class="skip" href="#main">跳至主要內容</a>
 ${siteHeader()}
 <main id="main">

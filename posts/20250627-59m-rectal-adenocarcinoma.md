@@ -1,9 +1,9 @@
 ---
-title: 59歲男性 直腸腺癌1期
+title: 59 歲男性 直腸腺癌 1 期
 date: 2025-06-27
 author: 林耿億醫師
 category: endoscopy
-summary: 「醫師，我最近覺得屁股卡卡的，有點脹、不太舒服，但也不會痛。」59 歲的上班族，沒出血、沒劇痛，聽起來像是痔瘡對吧？
+summary: 59 歲男性只覺得屁股卡卡、有點脹，不痛也沒出血。這種說不上來的不舒服，檢查後在直腸發現一顆略凹陷的大息肉。
 ---
 
 https://www.youtube.com/watch?v=Ojdp-_ynaSo

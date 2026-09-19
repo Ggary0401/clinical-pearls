@@ -3,10 +3,10 @@ title: 每日排便症候群
 date: 2019-02-25
 author: 林耿億醫師
 category: endoscopy
-summary: ｢醫師，我有便秘，可以拿軟便藥嗎。」｢喔，那你多久上一次廁所？」｢就沒辦法每天上阿，有時候兩天才能上一次，有時候三天，覺得不太正常。
+summary: 沒有每天排便就是便秘嗎？只要不會太硬、太軟、大不乾淨或腹痛，兩三天一次也在正常範圍。破解「一定要天天排便」的迷思。
 ---
 
-![](/assets/daily-bowel-syndrome-1.jpg)
+![坐在馬桶上的雙腿特寫](/assets/daily-bowel-syndrome-1.jpg)
 
 ｢醫師，我有便秘，可以拿軟便藥嗎。
 

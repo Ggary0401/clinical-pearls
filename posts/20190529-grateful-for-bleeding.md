@@ -1,9 +1,9 @@
 ---
-title: 感恩血便  讚嘆血便
+title: 感恩血便，讚嘆血便
 date: 2019-05-29
 author: 林耿億醫師
 category: endoscopy
-summary: 老劉是 50 歲退休老師，一開始所是因為血便求診，由於已經做過糞便潛血檢查，報告正常，於是我們直接安排痔瘡的療程。
+summary: 50 歲退休老師因血便就診，糞便潛血報告正常，痔瘡治療後卻仍持續出血。追查下去才找到真正的原因——潛血陰性不等於沒問題。
 ---
 
 https://www.youtube.com/watch?v=FSuTACGvqQw

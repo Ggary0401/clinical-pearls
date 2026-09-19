@@ -3,10 +3,10 @@ title: 醫師，可以當作痔瘡處理就好嗎
 date: 2020-07-23
 author: 林耿億醫師
 category: endoscopy
-summary: 「醫師，一定要檢查嗎？」「要阿，我不會算命喔。」今天門診來了一位 28 歲的年輕女性，原因是血便 3 天。
+summary: 28 歲女性血便三天，問能不能當痔瘡處理就好。肛門鏡看出血形態不像痔瘡，乙狀結腸鏡在 20 公分處發現出血息肉並當天切除。
 ---
 
-![](/assets/just-treat-it-as-piles-1.jpg)
+![女性以手遮住半邊臉](/assets/just-treat-it-as-piles-1.jpg)
 
 「醫師，一定要檢查嗎？」
 
@@ -62,7 +62,7 @@ https://www.youtube.com/watch?v=hmNnbSAVBqM
 
 完全看不出直腸有任何異狀
 
-![](/assets/just-treat-it-as-piles-2.jpg)
+![大腸鏡影像，畫面為腸道管腔](/assets/just-treat-it-as-piles-2.jpg)
 
 可是偏偏在觸診時
 

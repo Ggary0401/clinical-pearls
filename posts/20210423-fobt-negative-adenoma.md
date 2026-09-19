@@ -1,9 +1,9 @@
 ---
-title: 糞便潛血陰性  絨毛管狀腺瘤
+title: 糞便潛血陰性 絨毛管狀腺瘤
 date: 2021-04-23
 author: 林耿億醫師
 category: endoscopy
-summary: 糞便潛血陰性，就沒有大腸息肉嗎，不儘然，這位女性患者去年糞便潛血為陰性，但由於排便習慣改變，仍然安排了大腸鏡檢查。
+summary: 糞便潛血陰性就代表沒有息肉嗎？這位患者去年潛血陰性，因排便習慣改變仍安排大腸鏡，在升結腸發現扁平的絨毛管狀腺瘤。
 ---
 
 https://www.youtube.com/watch?v=9ijpvoJJ_2k

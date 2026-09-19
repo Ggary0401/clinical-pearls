@@ -1,12 +1,12 @@
 ---
-title: 沒有症狀   需要做胃鏡嗎
+title: 沒有症狀，需要做胃鏡嗎
 date: 2020-11-22
 author: 林耿億醫師
 category: endoscopy
-summary: 65歲的楊阿姨，在常規大腸鏡追蹤時，雖然沒有特別上腹不適，由於同一次麻醉，一起安排了胃鏡檢查，結果不但發現有胃息肉。
+summary: 65 歲阿姨常規大腸鏡追蹤時，趁同一次麻醉加做胃鏡，結果發現胃息肉、胃基質瘤與食道念珠菌感染。沒有症狀不等於沒有病灶。
 ---
 
-![](/assets/gastroscopy-without-symptoms-1.jpg)
+![雙手輕放在腹部的特寫](/assets/gastroscopy-without-symptoms-1.jpg)
 
 65歲的楊阿姨
 

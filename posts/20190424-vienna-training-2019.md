@@ -1,12 +1,12 @@
 ---
-title: 2019.04   維也納手術進修
+title: 維也納痔瘡動脈結紮手術進修
 date: 2019-04-24
 author: 林耿億醫師
 category: hemorrhoid
-summary: 這次到維也納，主要是觀摩痔瘡動脈結紮手術，一同參訪的有台大直腸外科醫師，及另一位瑞典外科醫師，第一次接觸痔瘡動脈結紮儀器 Trilogy。
+summary: 到維也納觀摩痔瘡動脈結紮手術，該院每月執行 100 至 120 台痔瘡手術、九成以上使用 Trilogy。手術由動脈結紮與痔瘡組織復位兩部分組成。
 ---
 
-![](/assets/vienna-training-2019-1.jpg)
+![八位穿綠色手術服的醫療人員在醫院合影](/assets/vienna-training-2019-1.jpg)
 
 這次到維也納
 
@@ -36,7 +36,7 @@ summary: 這次到維也納，主要是觀摩痔瘡動脈結紮手術，一同�
 
 才能夠促成此行
 
-![](/assets/vienna-training-2019-2.jpg)
+![林耿億醫師穿手術服戴口罩，在醫院走廊自拍](/assets/vienna-training-2019-2.jpg)
 
 這次訓練的醫院叫 Barmherzige Schwestern Krankenhaus Wien
 
@@ -44,7 +44,7 @@ summary: 這次到維也納，主要是觀摩痔瘡動脈結紮手術，一同�
 
 9 成以上用 Trilogy
 
-![](/assets/vienna-training-2019-3.jpg)
+![投影片講題：都卜勒導引的痔瘡動脈結紮與痔瘡組織復位](/assets/vienna-training-2019-3.jpg)
 
 當天由 Dr. Haunold 示範及演講
 
@@ -64,7 +64,7 @@ summary: 這次到維也納，主要是觀摩痔瘡動脈結紮手術，一同�
 
 降低疼痛
 
-![](/assets/vienna-training-2019-4.jpg)
+![講者在課堂上操作筆記型電腦](/assets/vienna-training-2019-4.jpg)
 
 這種手術方式
 
@@ -78,7 +78,7 @@ summary: 這次到維也納，主要是觀摩痔瘡動脈結紮手術，一同�
 
 做混合式手術
 
-![](/assets/vienna-training-2019-5.jpg)
+![手持痔瘡動脈結紮手術使用的 Trilogy 器械](/assets/vienna-training-2019-5.jpg)
 
 雖然是公立醫院
 
@@ -108,7 +108,7 @@ AMI 的 Trilogy 套組 ( 上面動畫是前一代機型 )
 
 由內而外將痔瘡組織復位
 
-![](/assets/vienna-training-2019-6.jpg)
+![手術室裡穿綠色手術服的團隊正在進行手術](/assets/vienna-training-2019-6.jpg)
 
 當天一共觀摩了三台手術
 
@@ -124,7 +124,7 @@ AMI 的 Trilogy 套組 ( 上面動畫是前一代機型 )
 
 沒辦法在門診追蹤術後回饋
 
-![](/assets/vienna-training-2019-7.jpg)
+![巴洛克風格的白色雕像大廳](/assets/vienna-training-2019-7.jpg)
 
 維也納美景宮博物館大廳
 

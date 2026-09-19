@@ -3,10 +3,10 @@ title: 痔瘡藥膏怎麼用
 date: 2018-08-10
 author: 林耿億醫師
 category: hemorrhoid
-summary: 今天來談談怎麼擦藥膏，這個也是天天在衛教的事，痔瘡藥膏百百種，很多人都是去藥局隨便買了一種，就開始擦。
+summary: 藥膏附的尖頭請丟掉，用手指塗抹到第二指節最安全。藥膏能收斂、止痛、消炎，卻無法讓痔瘡變小——真正有效的是生活習慣與溫水坐浴。
 ---
 
-![](/assets/hemorrhoid-ointment-1.jpg)
+![3D 小人站在巨大的紅色藥膏軟管旁，圖上有「痔瘡藥膏怎麼用」字樣](/assets/hemorrhoid-ointment-1.jpg)
 
 今天來談談怎麼擦藥膏
 

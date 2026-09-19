@@ -1,12 +1,12 @@
 ---
-title: 來談談肛裂 1. 肛裂的原因   2.肛裂如何預防〝內有患者真實分享〞
+title: 來談談肛裂：原因與預防
 date: 2025-09-04
 author: 林耿億醫師
 category: hemorrhoid
-summary: 今天來談談肛裂，肛裂是肛門疼痛最常見的原因，往往反覆發作，合併血便，而且常常被當成痔瘡治療，那麼為什麼會發生肛裂呢？
+summary: 肛裂是肛門疼痛最常見的原因，往往反覆發作、合併血便，還常被當成痔瘡治療。肛裂的成因、與肛門鬆緊的關係，以及預防方式。
 ---
 
-![](/assets/anal-fissure-talk-1.jpg)
+![黑色裂紋圖形搭配「肛裂」字樣](/assets/anal-fissure-talk-1.jpg)
 
 https://www.youtube.com/watch?v=kYsLdl4Abcc
 
@@ -76,7 +76,7 @@ https://www.youtube.com/watch?v=APc4kvTMXLE
 
 「為什麼張力會比較大？」
 
-![](/assets/anal-fissure-talk-2.jpg)
+![直腸與肛門的解剖示意圖，標出內括約肌、外括約肌與肛裂位置](/assets/anal-fissure-talk-2.jpg)
 
 先來談談解剖
 

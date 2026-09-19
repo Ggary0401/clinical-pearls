@@ -3,10 +3,10 @@ title: 醫生！我痔瘡牙起來了！
 date: 2018-06-30
 author: 林耿億醫師
 category: hemorrhoid
-summary: 這問題每天都在診間發生，首先要確定牙的真的是痔瘡，痔瘡是人體的正常組織，有正常的生理功能，就像紅酒的軟木塞。
+summary: 痔瘡是人人都有的正常組織，不需要「處理乾淨」。會痛、會流血才需要治療；而覺得痔瘡痛的人，有一半痛的其實不是痔瘡。
 ---
 
-![](/assets/hemorrhoid-flare-1.jpg)
+![背對鏡頭的人雙手摀住臀部，患部以紅色標示疼痛位置](/assets/hemorrhoid-flare-1.jpg)
 
 這問題每天都在診間發生
 

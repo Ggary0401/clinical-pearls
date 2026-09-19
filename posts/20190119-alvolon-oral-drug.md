@@ -1,12 +1,12 @@
 ---
-title: 痔瘡口服藥Alvolon 艾歐復隆錠 吃藥治療痔瘡的３個黃金時刻
+title: 痔瘡口服藥 Alvolon 艾歐復隆錠
 date: 2019-01-19
 author: 林耿億醫師
 category: hemorrhoid
-summary: Alvolon 這顆藥，雖然進入台灣的時間不久，不過說他是新藥，卻也已經被發現50年了。這是一種槐樹的天然萃取物，主要成分是 Diosmin ( Diosmin是一種天然存…
+summary: Alvolon 主成分 Diosmin 是柑橘類植物萃取的天然類黃酮苷，作用為維持血管張力、抑制發炎反應。吃藥治療痔瘡的三個黃金時刻。
 ---
 
-![](/assets/alvolon-oral-drug-1.jpg)
+![Alvolon 艾歐復隆錠的藥盒與包裝](/assets/alvolon-oral-drug-1.jpg)
 
 Alvolon 這顆藥，雖然進入台灣的時間不久，不過說他是新藥，卻也已經被發現50年了。
 
@@ -16,7 +16,7 @@ Alvolon 這顆藥，雖然進入台灣的時間不久，不過說他是新藥，
 
 作用機轉是維持血管張力，抑制發炎反應。
 
-![](/assets/alvolon-oral-drug-2.jpg)
+![痔瘡治療臨床指引的段落，以紅圈標出 diosmin 與相關療效](/assets/alvolon-oral-drug-2.jpg)
 
 這是目前教科書上唯一指定，有實驗組跟對照組相比後，有療效的痔瘡口服藥。
 

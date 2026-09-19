@@ -1,12 +1,12 @@
 ---
-title: 大腸癌年輕化，血便非痔瘡
+title: 大腸癌年輕化，血便不一定是痔瘡
 date: 2018-07-16
 author: 林耿億醫師
 category: endoscopy
-summary: 這是一個30歲的醫院年輕同事，有時後覺得，當醫生一輩子，只要可以幫忙一個朋友或家人，就值回票價了，做大腸鏡篩檢後。
+summary: 30 歲年輕同事大腸鏡篩檢發現管絨毛狀腺瘤並當下切除。這類腺瘤屬中高風險，數年後可能發展成大腸癌，而早期幾乎沒有症狀。
 ---
 
-![](/assets/young-colorectal-cancer-1.jpg)
+![三張大腸鏡影像，依序為息肉、切除過程與切除後的腸壁](/assets/young-colorectal-cancer-1.jpg)
 
 這是一個30歲的醫院年輕同事
 

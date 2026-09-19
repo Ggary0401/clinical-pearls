@@ -3,10 +3,10 @@ title: 大腸鏡固定環
 date: 2020-05-21
 author: 林耿億醫師
 category: endoscopy
-summary: 第一次看到這隻八爪章魚，只想到駭客任務裡的烏賊，不過當然是可愛多了啦 ^^，先讓大家猜一猜他的主要功能。
+summary: 大腸構造像麻花捲，皺褶後方容易藏住息肉。大腸鏡固定環如何撐開皺褶、提高息肉偵測率，原理與實際使用說明。
 ---
 
-![](/assets/colonoscopy-stabilizer-1.jpg)
+![大腸鏡前端加裝的固定環配件，共三種顏色](/assets/colonoscopy-stabilizer-1.jpg)
 
 第一次看到這隻八爪章魚
 
@@ -26,7 +26,7 @@ summary: 第一次看到這隻八爪章魚，只想到駭客任務裡的烏賊�
 
 非常聰明，答案就是 4，增加息肉偵測率喔！
 
-![](/assets/colonoscopy-stabilizer-2.jpg)
+![大腸皺褶與腸道彎曲造成檢查困難的示意圖](/assets/colonoscopy-stabilizer-2.jpg)
 
 為什麼可以增加息肉偵測率呢？
 
@@ -34,11 +34,11 @@ summary: 第一次看到這隻八爪章魚，只想到駭客任務裡的烏賊�
 
 雖然說，大腸鏡已經是目前檢查息肉最好的工具，沒有之一，但是配合大腸鏡固定環，可以撥開皺摺，減少死角，更進一步增加息肉的偵測率。
 
-![](/assets/colonoscopy-stabilizer-3.jpg)
+![大腸鏡固定環的結構特寫與功能標註](/assets/colonoscopy-stabilizer-3.jpg)
 
 除此之外，在比較垂墜的腸段，藉由旁邊的柔軟刷毛，可以幫助固定遠端腸道，將近端腸道解套後，再次前進，取代單純用力推進大腸鏡的方式，完整檢查整段大腸。
 
-![](/assets/colonoscopy-stabilizer-4.png)
+![長條圖：使用固定環後腺瘤偵測率由 50.9% 提高到 61.7%](/assets/colonoscopy-stabilizer-4.png)
 
 整體統計，使用大腸鏡固定環，可以增加 10% 的息肉偵測率，進一步降低大腸癌發生的風險，同時縮短檢查時間，而且不會降低舒適度。
 

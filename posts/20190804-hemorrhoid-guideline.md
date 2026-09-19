@@ -3,10 +3,10 @@ title: 痔瘡治療臨床指引
 date: 2019-08-04
 author: 林耿億醫師
 category: hemorrhoid
-summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧，一直很喜歡這張圖，出自大腸直腸外科期刊，很清楚地描繪目前痔瘡治療的臨床策略。
+summary: 大腸直腸外科期刊的痔瘡治療策略圖解。第一步是正確評估血便、排除大腸癌與發炎性疾病，再依痔瘡分度選擇藥物、結紮或手術。
 ---
 
-![](/assets/hemorrhoid-guideline-1.jpg)
+![痔瘡治療臨床指引圖解的全貌，涵蓋評估、藥物、門診處置與手術](/assets/hemorrhoid-guideline-1.jpg)
 
 江湖一點訣
 
@@ -26,7 +26,7 @@ summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧�
 
 也是按照這個方向進行
 
-![](/assets/hemorrhoid-guideline-2.jpg)
+![同一張指引圖解，標示以完整內視鏡評估血便的部分](/assets/hemorrhoid-guideline-2.jpg)
 
 首先我們看看左上角的圖
 
@@ -40,7 +40,7 @@ summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧�
 
 是目前首選檢查之一
 
-![](/assets/hemorrhoid-guideline-3.jpg)
+![同一張指引圖解，標示門診處置適用第一至三度內痔的部分](/assets/hemorrhoid-guideline-3.jpg)
 
 再來看到左下角的圖
 
@@ -60,7 +60,7 @@ summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧�
 
 不要便秘跟腹瀉
 
-![](/assets/hemorrhoid-guideline-4.jpg)
+![同一張指引圖解，標示飲食與排便習慣調整的部分](/assets/hemorrhoid-guideline-4.jpg)
 
 如果症狀持續
 
@@ -84,7 +84,7 @@ summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧�
 
 好處是不太影響生活、不需要恢復期
 
-![](/assets/hemorrhoid-guideline-5.jpg)
+![同一張指引圖解，標示血栓外痔三天內及早切除的部分](/assets/hemorrhoid-guideline-5.jpg)
 
 突發性的血栓外痔
 
@@ -98,7 +98,7 @@ summary: 江湖一點訣，說破不值錢，今天來談談痔瘡的治療吧�
 
 傷口平整度也比較好
 
-![](/assets/hemorrhoid-guideline-6.jpg)
+![同一張指引圖解，標示手術治療與多模式止痛的部分](/assets/hemorrhoid-guideline-6.jpg)
 
 如果是有症狀的外痔
 

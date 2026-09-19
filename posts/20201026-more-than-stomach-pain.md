@@ -3,10 +3,10 @@ title: 不只是胃痛
 date: 2020-10-26
 author: 林耿億醫師
 category: endoscopy
-summary: 「醫師，我胃痛好久了。」劉先生是 40 歲的上班族，「大概多久了？」「反反覆覆大約 1 年左右，可以做超音波看一下嗎？」
+summary: 40 歲上班族胃痛反覆一年，希望做超音波。腸胃這類中空器官因空氣阻礙傳導並不適合超音波評估，胃鏡才是該做的檢查。
 ---
 
-![](/assets/more-than-stomach-pain-1.jpg)
+![女性蜷曲躺在床上抱著枕頭，神情不適](/assets/more-than-stomach-pain-1.jpg)
 
 「醫師，我胃痛好久了。」劉先生是 40 歲的上班族
 

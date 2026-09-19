@@ -1,12 +1,12 @@
 ---
-title: 不只是血便 - 潰瘍性大腸炎
+title: 不只是血便：潰瘍性大腸炎
 date: 2020-08-29
 author: 林耿億醫師
 category: endoscopy
-summary: 對於血便的患者，門診有三個最常見的診斷，痔瘡、肛裂、大腸病變，患者很容易把出血跟痔瘡直接劃上等號，其實是很危險的。
+summary: 血便最常見的三個診斷是痔瘡、肛裂與大腸病變。這位中年患者確診潰瘍性大腸炎，自肛門口 20 公分起黏膜糜爛並合併多處潰瘍。
 ---
 
-![](/assets/ulcerative-colitis-1.jpg)
+![電視新聞畫面，報導日本首相因病請辭](/assets/ulcerative-colitis-1.jpg)
 
 對於血便的患者
 

@@ -3,10 +3,10 @@ title: 腸躁症的診斷與治療
 date: 2018-09-07
 author: 林耿億醫師
 category: endoscopy
-summary: 先講結論，腸躁症沒有特定病因，所以也沒有特定治療。（那我們討論幹嘛？），腸躁症的全名叫「大腸激躁症候群」，英文叫做 Irritable Bowel Syndrome（IBS…
+summary: 腸躁症沒有特定病因，也就沒有特定治療。全球每 10 人就有 1 人受影響，女性約為男性兩倍。發生原因、診斷方式與治療方向整理。
 ---
 
-![](/assets/ibs-diagnosis-treatment-1.jpg)
+![女性側躺按著腹部，圖上有「腸躁症：診斷與治療」字樣](/assets/ibs-diagnosis-treatment-1.jpg)
 
 先講結論，腸躁症沒有特定病因，所以也沒有特定治療。
 

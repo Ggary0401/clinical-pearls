@@ -3,10 +3,10 @@ title: 聽說胃鏡大腸鏡很痛？
 date: 2018-07-03
 author: 林耿億醫師
 category: endoscopy
-summary: 聽說大腸鏡很痛，是真的嗎？真的！如果你不打麻醉的話，我相信真的很痛，大腸鏡檢查，是將一隻軟管，從肛門伸入120-150公分。
+summary: 不打麻醉確實會痛。大腸鏡從肛門伸入 120 到 150 公分、約 15 至 30 分鐘，準確度九成五以上，發現息肉可同時切除。
 ---
 
-![](/assets/is-endoscopy-painful-1.jpg)
+![插畫：一排人依序掩嘴耳語傳話，圖上有「聽說胃鏡大腸鏡很痛」字樣](/assets/is-endoscopy-painful-1.jpg)
 
 聽說大腸鏡很痛
 
@@ -18,9 +18,9 @@ summary: 聽說大腸鏡很痛，是真的嗎？真的！如果你不打麻醉�
 
 我相信真的很痛
 
-![](/assets/is-endoscopy-painful-2.jpg)
+![手寫的大腸鏡滿意度調查表，勾選「睡醒就作完了」與「完全沒感覺」](/assets/is-endoscopy-painful-2.jpg)
 
-![](/assets/is-endoscopy-painful-3.jpg)
+![另一份手寫的大腸鏡滿意度調查表，同樣勾選睡著且完全沒感覺](/assets/is-endoscopy-painful-3.jpg)
 
 大腸鏡檢查
 
@@ -68,7 +68,7 @@ summary: 聽說大腸鏡很痛，是真的嗎？真的！如果你不打麻醉�
 
 舒眠大腸鏡的統計
 
-![](/assets/is-endoscopy-painful-4.jpg)
+![大腸鏡滿意度統計：七成「睡醒就作完了」，八成二「完全沒感覺」](/assets/is-endoscopy-painful-4.jpg)
 
 可以發現舒眠麻醉下
 

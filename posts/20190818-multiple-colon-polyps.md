@@ -3,7 +3,7 @@ title: 多發性大腸息肉
 date: 2019-08-18
 author: 林耿億醫師
 category: endoscopy
-summary: 前幾天，我們遇到一位患者，足足花了一小時，才完成整個大腸鏡檢查，有時候，很難讓患者理解，為什麼有的人大腸鏡一下就做完了。
+summary: 同樣是大腸鏡，為什麼有人幾分鐘就結束、有人要花一小時？多發性大腸息肉的處理過程，以及檢查時間差異的真正原因。
 ---
 
 https://www.youtube.com/watch?v=H2kNvQBdLDU
@@ -36,7 +36,7 @@ https://www.youtube.com/watch?v=H2kNvQBdLDU
 
 大腸鏡要做很久吧
 
-![](/assets/multiple-colon-polyps-1.jpg)
+![大腸解剖圖，標示升結腸、橫結腸、降結腸、乙狀結腸、直腸與肛門](/assets/multiple-colon-polyps-1.jpg)
 
 首先
 
@@ -60,9 +60,9 @@ https://www.youtube.com/watch?v=H2kNvQBdLDU
 
 提高檢查的困難度
 
-![](/assets/multiple-colon-polyps-2.jpg)
+![迂迴打結的大腸示意圖](/assets/multiple-colon-polyps-2.jpg)
 
-![](/assets/multiple-colon-polyps-3.jpg)
+![兩種大腸彎曲型態的對照示意圖](/assets/multiple-colon-polyps-3.jpg)
 
 因此
 
@@ -188,7 +188,7 @@ https://www.youtube.com/watch?v=H2kNvQBdLDU
 
 隨大便排出體外
 
-![](/assets/multiple-colon-polyps-4.jpg)
+![內視鏡止血夾器械前端的特寫](/assets/multiple-colon-polyps-4.jpg)
 
 恩
 

@@ -1,9 +1,9 @@
 ---
-title: 23歲女性 乙狀結腸惡性腫瘤
+title: 23 歲女性 乙狀結腸惡性腫瘤
 date: 2019-03-26
 author: 林耿億醫師
 category: endoscopy
-summary: 這是一個長期左下腹痛的 23 歲年輕女性，沒有任何大腸癌家族史，運動員，作息正常，來診所安排大腸鏡檢查。
+summary: 23 歲運動員、作息正常也沒有家族史，因長期左下腹痛安排大腸鏡，卻在乙狀結腸發現巨大息肉。預先以止血夾阻斷血流後切除的完整過程。
 ---
 
 https://www.youtube.com/watch?v=fqBpErSgSvo

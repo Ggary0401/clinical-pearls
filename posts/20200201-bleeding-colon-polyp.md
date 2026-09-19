@@ -3,7 +3,7 @@ title: 出血性大腸息肉
 date: 2020-02-01
 author: 林耿億醫師
 category: endoscopy
-summary: 「醫師，我肛裂一直流血很痛！」70多歲的陳先生，半年前因為肛裂來就診過，一進診間就跟我說。「這次不行了，我要做微創手術！」
+summary: 70 多歲患者以為是肛裂出血，甚至昏倒送急診輸血。大腸鏡檢查後才發現，真正的出血來源是大腸息肉。
 ---
 
 https://www.youtube.com/watch?v=82pDGfOKz6c

@@ -3,10 +3,10 @@ title: 頑固型肛裂的肉毒桿菌治療
 date: 2018-10-28
 author: 林耿億醫師
 category: hemorrhoid
-summary: #大的不是便，是刀子，慢性肛裂已久，又不想開刀的患者，針對頑固型的慢性肛裂，目前可以使用肉毒桿菌注射。
+summary: 慢性肛裂不想開刀，可考慮肉毒桿菌注射。療程約 5 分鐘，不需清腸住院，治癒率七至八成，效果可維持三個月且無失禁後遺症。
 ---
 
-![](/assets/anal-fissure-botox-1.jpg)
+![馬桶座圈上布滿尖釘，比喻肛裂患者排便時的疼痛](/assets/anal-fissure-botox-1.jpg)
 
 #大的不是便，是刀子
 
