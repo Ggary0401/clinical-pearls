@@ -45,6 +45,12 @@ npm run dev     # http://localhost:8788，含 Functions 與 KV 模擬
 - **文章更新日期由 git 決定**（`build.mjs:97-109`）：讀該檔最後一次 commit 日期，
   有未提交修改則視為今天。所以改完沒 commit 就 build，日期會是今天。
 - **assets 自動帶內容雜湊版號**（`?v=...`），不必手動處理快取。
+- **網址一律以 `/` 結尾**（og:url、canonical、sitemap、站內連結）。用 `pagePath(slug)` 產生，
+  不要手寫 `/${slug}`。沒有 `/` 的版本由 `_redirects` 301 過去。
+- **分享預覽圖**預設用 `assets/og-default.jpg`（1200x630）；文章要自訂封面就在 front matter
+  寫 `cover: 檔名.jpg`（放 `assets/`，必須 1200x630、<1MB）。`npm run build` 結尾會跑
+  `scripts/check-share.mjs`，標籤缺漏或尺寸不對會直接讓 build 失敗；
+  上線後可用 `node scripts/check-share.mjs --live` 實測。
 - **手機優先**。表格與程式碼區塊各自橫向捲動，頁面本身不得出現橫向捲軸。
 - commit 訊息用中文，簡短描述做了什麼，與既有歷史一致。
 
