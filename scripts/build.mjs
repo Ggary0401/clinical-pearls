@@ -10,7 +10,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -28,10 +28,10 @@ const SITE = {
   lang: 'zh-Hant-TW',
   // 正式網址（canonical / sitemap 用）
   origin: 'https://drgarylin.com',
-  // 舊網址轉址（文章改名時在這裡補一行，避免既有連結失效）。兩邊都要以 / 結尾。
+  // 舊網址轉址（文章改名時在這裡補一行，避免既有連結失效）
   redirects: [
-    ['/20260912-introduction/', '/20260912-sigmoid-colon-polyp/'],
-    ['/20260905-writing-format/', '/20260905-two-worlds/'],
+    ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
+    ['/20260905-writing-format', '/20260905-two-worlds'],
   ],
   // 首頁那排分類入口，順序就是顯示順序。每個分類會產生一個 /<slug> 頁面。
   //   kind: 'about' -> 放學經歷那一區；其餘 -> 列出 category 指到這個 slug 的文章
@@ -66,15 +66,7 @@ const SITE = {
       '韓國大邱 구병원 醫院進修',
     ],
   },
-  // 沒有自訂封面的頁面所用的分享預覽圖（og:image），放在 assets/，1200x630。
-  // 重畫：swift scripts/make-og-default.swift
-  ogDefault: {
-    file: 'og-default.jpg',
-    width: 1200,
-    height: 630,
-    alt: "Kylin's Note · 林耿億醫師的醫療筆記",
-  },
-  // Banner 圖片出處（CC BY 2.0，標示於頁尾）
+  // 分享連結時的預覽圖（og:image）。CC BY 2.0，出處標示於頁尾。
   preview: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
     workTitle: 'The Stethoscope, Peru',
@@ -84,7 +76,7 @@ const SITE = {
     licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
     sourceName: 'Wikimedia Commons',
   },
-  // 進站 Banner（出處見上面的 preview）
+  // 進站 Banner（與分享預覽圖同一張，CC BY 2.0，出處標示於頁尾）
   hero: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Stethoscope%2C_Peru.jpg/1280px-The_Stethoscope%2C_Peru.jpg',
     width: 1280,
@@ -97,9 +89,6 @@ const SITE = {
 
 /** Banner 圖片網址 */
 const heroPath = () => SITE.hero.src;
-
-/** 頁面網址一律以 / 結尾（Cloudflare Pages 對沒有 / 的網址會轉址，og:url 若不含 / 就會形成轉址） */
-const pagePath = (slug) => `/${slug}/`;
 
 /** YouTube 縮圖
  *  maxresdefault 不是每支影片都有，而且缺少時會回 404 卻夾帶一張 120x90 佔位圖
@@ -341,18 +330,11 @@ function findLeadVisual(body) {
   return { type: 'video', id: vid[1] };
 }
 
-/** 分享預覽圖（og:image）：必須在自己網域、1200x630、<1MB（build 後由 check-share.mjs 驗證）。
- *  文章可在 front matter 寫 `cover: 檔名.jpg`（放在 assets/）；沒寫就用預設品牌圖。
- *  刻意不用文章內文的圖或 YouTube 縮圖，因為尺寸不固定、也不在自己網域。 */
-function ogImageFor(cover, alt) {
-  if (cover) {
-    if (!existsSync(join(ASSETS_DIR, cover))) {
-      console.error(`找不到 cover 檔案 assets/${cover}`);
-      process.exit(1);
-    }
-    return { url: SITE.origin + assetUrl(cover), alt };
-  }
-  return { url: SITE.origin + assetUrl(SITE.ogDefault.file), alt: SITE.ogDefault.alt };
+/** 分享預覽圖（og:image）：同樣取最先出現的視覺，需為絕對網址 */
+function ogImageFor(lead) {
+  if (!lead) return SITE.preview.src;
+  if (lead.type === 'video') return ytThumbSafe(lead.id);
+  return /^https?:\/\//.test(lead.src) ? lead.src : SITE.origin + lead.src;
 }
 
 /* ------------------------------------------------------------------ 版型 */
@@ -361,8 +343,7 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Parisienne&display=swap" rel="stylesheet">`;
 
-function head(title, description, canonicalPath, image = ogImageFor(), extra = '', ogType = 'website') {
-  const url = SITE.origin + canonicalPath;
+function head(title, description, canonicalPath, image = SITE.preview.src, extra = '') {
   return `<!DOCTYPE html>
 <html lang="${SITE.lang}">
 <head>
@@ -371,19 +352,14 @@ function head(title, description, canonicalPath, image = ogImageFor(), extra = '
 <title>${esc(title)}</title>
 <meta name="description" content="${escAttr(description)}">
 <meta name="author" content="${escAttr(SITE.author)}">
-<link rel="canonical" href="${escAttr(url)}">
+<link rel="canonical" href="${escAttr(SITE.origin + canonicalPath)}">
 <meta property="og:title" content="${escAttr(title)}">
 <meta property="og:description" content="${escAttr(description)}">
-<meta property="og:type" content="${ogType}">
-<meta property="og:url" content="${escAttr(url)}">
+<meta property="og:type" content="${canonicalPath === '/' ? 'website' : 'article'}">
+<meta property="og:url" content="${escAttr(SITE.origin + canonicalPath)}">
 <meta property="og:site_name" content="${escAttr(SITE.title)}">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="${escAttr(image.url)}">
-<meta property="og:image:width" content="${SITE.ogDefault.width}">
-<meta property="og:image:height" content="${SITE.ogDefault.height}">
-<meta property="og:image:alt" content="${escAttr(image.alt)}">
+<meta property="og:image" content="${escAttr(image)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${escAttr(image.url)}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
 ${FONTS}
 <link rel="stylesheet" href="${assetUrl('style.css')}">
@@ -393,7 +369,7 @@ ${extra}</head>`;
 /* --------------------------------------------------- 結構化資料（JSON-LD） */
 
 /** 作者兼發布者。搜尋引擎靠這個把文章掛到同一個人身上。 */
-const LD_AUTHOR = { '@type': 'Person', name: SITE.author, url: SITE.origin + '/' };
+const LD_AUTHOR = { '@type': 'Person', name: SITE.author, url: SITE.origin };
 
 /** JSON-LD 內容不能出現原樣的 `<`，否則會提前結束 script */
 const ldScript = (obj) =>
@@ -401,10 +377,10 @@ const ldScript = (obj) =>
 
 /** 文章頁：BlogPosting + 麵包屑 */
 function postLd(p) {
-  const url = SITE.origin + pagePath(p.slug);
+  const url = `${SITE.origin}/${p.slug}`;
   const sec = SITE.sections.find((s) => s.slug === p.category);
-  const crumbs = [{ name: '首頁', item: SITE.origin + '/' }];
-  if (sec) crumbs.push({ name: sec.zh, item: SITE.origin + pagePath(sec.slug) });
+  const crumbs = [{ name: '首頁', item: SITE.origin }];
+  if (sec) crumbs.push({ name: sec.zh, item: `${SITE.origin}/${sec.slug}` });
   crumbs.push({ name: p.title, item: url });
   return [
     ldScript({
@@ -412,7 +388,7 @@ function postLd(p) {
       '@type': 'BlogPosting',
       headline: p.title,
       description: p.summary,
-      image: [p.ogImage.url],
+      image: [ogImageFor(p.lead)],
       datePublished: p.date,
       dateModified: p.updated,
       author: LD_AUTHOR,
@@ -471,7 +447,7 @@ function navStrip(activeSlug = '') {
   const items = SITE.sections
     .map((s) => {
       const cur = s.slug === activeSlug;
-      return `<a class="strip-link${cur ? ' is-current' : ''}" href="${escAttr(pagePath(s.slug))}"${cur ? ' aria-current="page"' : ''}>${esc(s.zh)}</a>`;
+      return `<a class="strip-link${cur ? ' is-current' : ''}" href="/${escAttr(s.slug)}"${cur ? ' aria-current="page"' : ''}>${esc(s.zh)}</a>`;
     })
     .join('\n      <span class="strip-sep" aria-hidden="true"></span>\n      ');
   return `  <nav class="strip" aria-label="分類">
@@ -511,7 +487,7 @@ function footer() {
         </div>
       </div>
       <p class="credit">
-        Banner：<a href="${escAttr(SITE.preview.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.workTitle)}</a>
+        Banner 與分享預覽圖：<a href="${escAttr(SITE.preview.workUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.workTitle)}</a>
         by ${esc(SITE.preview.creator)}，取自 ${esc(SITE.preview.sourceName)}，授權
         <a href="${escAttr(SITE.preview.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(SITE.preview.license)}</a>。
       </p>
@@ -555,7 +531,7 @@ function cardsHtml(posts) {
             `;
       }
       return `        <li class="card">
-          <a class="card-link" href="${escAttr(pagePath(p.slug))}">
+          <a class="card-link" href="/${escAttr(p.slug)}">
             ${thumb}<span class="card-body">
               <span class="card-no">${String(i + 1).padStart(2, '0')}</span>
               <h3 class="card-title">${esc(p.title)}</h3>
@@ -612,7 +588,7 @@ ${footer()}
 /** 文章底部的返回連結：回到所屬分類，沒寫分類就回首頁 */
 function postBack(p) {
   const s = SITE.sections.find((x) => x.slug === p.category && x.kind !== 'about');
-  const href = s ? pagePath(s.slug) : '/';
+  const href = s ? `/${s.slug}` : '/';
   const label = s ? `回到${s.zh}` : '回到首頁';
   return `<p class="back"><a href="${escAttr(href)}"><span aria-hidden="true">←</span> ${esc(label)}</a></p>`;
 }
@@ -637,7 +613,7 @@ ${
     </div>
   </section>`;
 
-  return `${head(`${section.zh} · ${SITE.title}`, desc, pagePath(section.slug))}
+  return `${head(`${section.zh} · ${SITE.title}`, desc, `/${section.slug}`)}
 <body>
 <a class="skip" href="#main">跳至主要內容</a>
 ${siteHeader()}
@@ -661,7 +637,7 @@ ${footer()}
 
 /** 404 頁。沒有這個檔案時，Cloudflare Pages 會把不存在的路徑導回首頁並回傳 200（軟性 404，傷 SEO）。 */
 function render404() {
-  return `${head(`找不到頁面 · ${SITE.title}`, '找不到這個頁面。', '/404.html')}
+  return `${head(`找不到頁面 · ${SITE.title}`, '找不到這個頁面。', '/404')}
 <body>
 <a class="skip" href="#main">跳至主要內容</a>
 ${siteHeader()}
@@ -690,11 +666,11 @@ const clinicLinks = () =>
     .join('<br>')}</p>`;
 
 function renderPost(p) {
-  const ogImage = p.ogImage;
+  const ogImage = ogImageFor(p.lead);
   const timeMeta =
     `<meta property="article:published_time" content="${escAttr(p.date)}">\n` +
     `<meta property="article:modified_time" content="${escAttr(p.updated)}">\n`;
-  return `${head(`${p.title} · ${SITE.title}`, p.summary, pagePath(p.slug), ogImage, timeMeta, 'article')}
+  return `${head(`${p.title} · ${SITE.title}`, p.summary, `/${p.slug}`, ogImage, timeMeta)}
 <body data-slug="${escAttr(p.slug)}">
 ${postLd(p)}
 <a class="skip" href="#main">跳至主要內容</a>
@@ -757,7 +733,6 @@ function build() {
       updated,
       category: data.category || '',
       lead,
-      ogImage: ogImageFor(data.cover, data.title || slug),
       html: renderMarkdown(body),
     };
   });
@@ -788,14 +763,14 @@ function build() {
   writeFileSync(join(OUT_DIR, 'index.html'), renderIndex(posts), 'utf8');
   writeFileSync(join(OUT_DIR, '404.html'), render404(), 'utf8');
 
-  // 301 轉址：
-  //  1. 沒有結尾 / 的網址 -> 有 /（Pages 本來就會用 308 轉，這裡明確寫成 301）
-  //  2. 舊網址（SITE.redirects）-> 新網址，含有 / 與沒有 / 兩種寫法，一步到位不繞路
-  const rules = [
-    ...[...SITE.sections.map((s) => s.slug), ...posts.map((p) => p.slug)].map((slug) => [`/${slug}`, pagePath(slug)]),
-    ...SITE.redirects.flatMap(([from, to]) => [[from.replace(/\/$/, ''), to], [from, to]]),
-  ];
-  writeFileSync(join(OUT_DIR, '_redirects'), rules.map(([from, to]) => `${from} ${to} 301`).join('\n') + '\n', 'utf8');
+  // 舊網址 301 轉址
+  if (SITE.redirects.length) {
+    writeFileSync(
+      join(OUT_DIR, '_redirects'),
+      SITE.redirects.map(([from, to]) => `${from} ${to} 301`).join('\n') + '\n',
+      'utf8'
+    );
+  }
 
   for (const f of readdirSync(ASSETS_DIR)) copyFileSync(join(ASSETS_DIR, f), join(OUT_DIR, 'assets', f));
 
@@ -806,9 +781,9 @@ function build() {
     { loc: '/', lastmod: siteLastmod },
     ...SITE.sections.map((s) => {
       const own = posts.filter((p) => p.category === s.slug);
-      return { loc: pagePath(s.slug), lastmod: own.length ? own[0].updated : siteLastmod };
+      return { loc: `/${s.slug}`, lastmod: own.length ? own[0].updated : siteLastmod };
     }),
-    ...posts.map((p) => ({ loc: pagePath(p.slug), lastmod: p.updated })),
+    ...posts.map((p) => ({ loc: `/${p.slug}`, lastmod: p.updated })),
   ];
   const urls = entries
     .map((e) => `  <url><loc>${origin}${e.loc}</loc><lastmod>${e.lastmod}</lastmod></url>`)
@@ -829,7 +804,3 @@ function build() {
 }
 
 build();
-
-// 分享預覽的檢查。有缺漏就讓 build 失敗（exit code 非 0）。
-const check = spawnSync(process.execPath, [join(ROOT, 'scripts', 'check-share.mjs')], { stdio: 'inherit' });
-if (check.status !== 0) process.exit(check.status ?? 1);
