@@ -48,6 +48,44 @@ const SITE = {
     ['由此去', 'https://www.google.com/maps/place/%E5%BA%B7%E6%BE%84%E8%A8%BA%E6%89%80-%E5%8F%B0%E4%B8%AD%E5%BE%AE%E5%89%B5%E7%97%94%E7%98%A1%E6%89%8B%E8%A1%93%E4%B8%AD%E5%BF%83/@24.1441706,120.6529023,1829m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34693d54ebdce08d:0xe062af7bf5fe254b!8m2!3d24.1441706!4d120.6529023!16s%2Fg%2F11f8hw6qj9!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D'],
     ['線上掛號', 'https://line.me/R/ti/p/@idb6828q'],
   ],
+  // 閱讀路徑：客人從症狀進來，依階段一篇一篇往下走。順序就是「下一步」的順序。
+  //   每篇文章結尾自動出現「下一步」卡片；走到最後一篇則導向線上掛號。
+  //   同一篇文章出現在多條路徑時，以第一次出現的那條路徑為準。
+  paths: [
+    {
+      slug: 'anal', zh: '肛門不舒服', en: 'ANAL',
+      intro: '痛、腫、癢、有東西掉出來——先認出是哪一種，再決定要不要處理。',
+      stages: [
+        { zh: '認出自己', posts: ['20180822-anal-pain-causes', '20190702-pile-vs-fissure', '20180819-anal-abscess'] },
+        { zh: '不再害怕', posts: ['20181107-hemorrhoid-no-surgery', '20181122-painless-banding', '20190804-hemorrhoid-guideline'] },
+        { zh: '值得信任', posts: ['20190424-vienna-training-2019', '20200626-ligasure-device', '20250908-het-bipolar-therapy-2025', '20190108-exparel-pain-control', '20181028-anal-fissure-botox'] },
+      ],
+    },
+    {
+      slug: 'bleeding', zh: '大便有血', en: 'BLEEDING',
+      intro: '血便不一定是痔瘡。看懂血的顏色與樣子，知道什麼時候不能拖。',
+      stages: [
+        { zh: '認出自己', posts: ['20180630-blood-in-stool', '20181228-reading-rectal-bleeding'] },
+        { zh: '不再害怕', posts: ['20180716-young-colorectal-cancer', '20200723-just-treat-it-as-piles', '20210423-fobt-negative-adenoma', '20190715-polyp-truth', '20180703-is-endoscopy-painful', '20230603-painless-endoscopy-case-01'] },
+        { zh: '值得信任', posts: ['20190326-23f-sigmoid-cancer', '20191224-30f-low-rectal-cancer', '20210413-45m-sigmoid-cancer', '20250627-59m-rectal-adenocarcinoma'] },
+      ],
+    },
+    {
+      slug: 'stomach', zh: '胃腸不適', en: 'DIGESTIVE',
+      intro: '胃痛、脹氣、排便習慣改變——長期反覆，值得查清楚原因。',
+      stages: [
+        { zh: '認出自己', posts: ['20201026-more-than-stomach-pain', '20190225-daily-bowel-syndrome', '20180907-ibs-diagnosis-treatment'] },
+        { zh: '不再害怕', posts: ['20201122-gastroscopy-without-symptoms', '20190308-eight-years-stomach-pain', '20180703-is-endoscopy-painful'] },
+        { zh: '值得信任', posts: ['20200829-ulcerative-colitis', '20220811-fodmap-food-choice'] },
+      ],
+    },
+  ],
+  // 病人回饋素材（手寫回饋單、影片），顯示在各路徑頁「值得信任」階段之後。
+  //   path: 對應 paths[].slug
+  //   image:   { path, type: 'image',   src: 'feedback-anal-01.jpg', alt: '圖片文字說明', caption: '（選填）' }
+  //   youtube: { path, type: 'youtube', id: 'YouTube影片ID', caption: '（選填）' }
+  // 圖檔放 assets/（不能有子資料夾），檔名建議 feedback-開頭。清單是空的就不會顯示這一區。
+  feedback: [],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
     education: [
@@ -97,6 +135,16 @@ const heroPath = () => SITE.hero.src;
 const ytThumbSafe = (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const ytImgTag = (id, extra = '') =>
   `<img src="${ytThumbSafe(id)}" data-yt-thumb="${id}"${extra} alt="" width="1280" height="720" loading="lazy">`;
+
+/** 影片外框：點擊才載入 YouTube 播放器（文章內文與回饋區共用） */
+const videoFacade = (id) => `<div class="video">
+  <a class="video-facade" href="https://www.youtube.com/watch?v=${id}" data-yt="${id}" aria-label="播放影片">
+    ${ytImgTag(id, ' crossorigin="anonymous"')}
+    <span class="video-play" aria-hidden="true">
+      <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+    </span>
+  </a>
+</div>`;
 
 const esc = (s = '') =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -206,14 +254,7 @@ function renderMarkdown(md, isRoot = true) {
     const yt = line.match(YT);
     if (yt) {
       const id = yt[1];
-      out.push(`<div class="video">
-  <a class="video-facade" href="https://www.youtube.com/watch?v=${id}" data-yt="${id}" aria-label="播放影片">
-    ${ytImgTag(id, ' crossorigin="anonymous"')}
-    <span class="video-play" aria-hidden="true">
-      <svg viewBox="0 0 68 48" width="68" height="48" focusable="false"><path class="video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.8 0 34 0 34 0S12.2 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.2 48 34 48 34 48s21.8 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
-    </span>
-  </a>
-</div>`);
+      out.push(videoFacade(id));
       i++;
       continue;
     }
@@ -545,6 +586,140 @@ function cardsHtml(posts) {
     .join('\n');
 }
 
+/* ------------------------------------------------------------------ 閱讀路徑 */
+
+/** 攤平所有路徑，建立 slug -> { path, stage, next } 查表（重複文章以第一次出現為準） */
+function buildPathIndex() {
+  const idx = new Map();
+  for (const path of SITE.paths) {
+    const flat = path.stages.flatMap((st) => st.posts.map((slug) => ({ slug, stage: st.zh })));
+    flat.forEach((item, i) => {
+      if (!idx.has(item.slug)) idx.set(item.slug, { path, stage: item.stage, next: flat[i + 1] ? flat[i + 1].slug : null });
+    });
+  }
+  return idx;
+}
+
+/** 文章結尾的「下一步」：路徑上的下一篇；走到底就導向線上掛號 */
+function nextStep(p, pathIdx, bySlug) {
+  const hit = pathIdx.get(p.slug);
+  if (!hit) return '';
+  const nextPost = hit.next && bySlug.get(hit.next);
+  if (nextPost) {
+    return `<aside class="next-step" aria-label="下一步">
+        <p class="next-kicker">${esc(hit.path.zh)} · 下一步</p>
+        <a class="next-link" href="/${escAttr(nextPost.slug)}">
+          <span class="next-title">${esc(nextPost.title)}</span>
+          <span class="next-more">繼續閱讀 <span aria-hidden="true">→</span></span>
+        </a>
+        <p class="next-all"><a href="/start/${escAttr(hit.path.slug)}">看「${esc(hit.path.zh)}」完整路徑</a></p>
+      </aside>`;
+  }
+  const book = SITE.clinic.find(([t]) => t === '線上掛號') || SITE.clinic[0];
+  return `<aside class="next-step next-final" aria-label="下一步">
+        <p class="next-kicker">${esc(hit.path.zh)} · 走到這裡了</p>
+        <a class="next-link" href="${escAttr(book[1])}" target="_blank" rel="noopener noreferrer">
+          <span class="next-title">如果你也有類似的情形，歡迎來門診聊聊</span>
+          <span class="next-more">${esc(book[0])} <span aria-hidden="true">→</span></span>
+        </a>
+        <p class="next-all"><a href="/start/${escAttr(hit.path.slug)}">回顧「${esc(hit.path.zh)}」完整路徑</a></p>
+      </aside>`;
+}
+
+/** 首頁的三個入口 */
+function pathDoors() {
+  return `  <section class="doors">
+    <div class="wrap">
+      ${sectionTitle('START HERE', '你現在哪裡不舒服？', 'start')}
+      <ul class="door-list">
+${SITE.paths
+  .map(
+    (pt) => `        <li><a class="door" href="/start/${escAttr(pt.slug)}">
+          <span class="door-en">${esc(pt.en)}</span>
+          <span class="door-zh">${esc(pt.zh)}</span>
+          <span class="door-intro">${esc(pt.intro)}</span>
+          <span class="card-more">從這裡開始 <span aria-hidden="true">→</span></span>
+        </a></li>`
+  )
+  .join('\n')}
+      </ul>
+    </div>
+  </section>`;
+}
+
+/** 病人回饋區（素材清單在 SITE.feedback；沒有素材就整區不顯示） */
+function feedbackHtml(pathSlug) {
+  const items = SITE.feedback.filter((f) => f.path === pathSlug);
+  if (!items.length) return '';
+  const body = items
+    .map((f) => {
+      const media = f.type === 'youtube'
+        ? videoFacade(f.id)
+        : `<img src="${escAttr(assetUrl(f.src))}" alt="${escAttr(f.alt || '')}" loading="lazy">`;
+      return `        <figure class="fb-item">${media}${f.caption ? `<figcaption>${esc(f.caption)}</figcaption>` : ''}</figure>`;
+    })
+    .join('\n');
+  return `  <section class="feedback">
+    <div class="wrap">
+      ${sectionTitle('FEEDBACK', '病人的回饋')}
+      <div class="fb-grid">
+${body}
+      </div>
+    </div>
+  </section>`;
+}
+
+/** 路徑頁 /start/<slug>：依階段排好文章，最後接回饋與掛號 */
+function renderPath(path, bySlug) {
+  const book = SITE.clinic.find(([t]) => t === '線上掛號') || SITE.clinic[0];
+  const stages = path.stages
+    .map((st, si) => {
+      const posts = st.posts.map((s) => bySlug.get(s)).filter(Boolean);
+      return `      <div class="stage">
+        <h3 class="stage-title"><span class="stage-no">${String(si + 1).padStart(2, '0')}</span>${esc(st.zh)}</h3>
+        <ol class="stage-list">
+${posts.map((p) => `          <li><a href="/${escAttr(p.slug)}">${esc(p.title)}</a></li>`).join('\n')}
+        </ol>
+      </div>`;
+    })
+    .join('\n');
+  return `${head(`${path.zh} · ${SITE.title}`, path.intro, `/start/${path.slug}`)}
+<body>
+<a class="skip" href="#main">跳至主要內容</a>
+${siteHeader()}
+<main id="main">
+
+${navStrip()}
+
+  <section class="notes path">
+    <div class="wrap">
+      ${sectionTitle(path.en, path.zh)}
+      <p class="path-intro">${esc(path.intro)}</p>
+${stages}
+    </div>
+  </section>
+
+${feedbackHtml(path.slug)}
+
+  <section class="path-cta">
+    <div class="wrap">
+      <p class="path-cta-text">看完還是不確定？直接讓醫師看一下最準。</p>
+      <p><a class="pill pill-lg" href="${escAttr(book[1])}" target="_blank" rel="noopener noreferrer">${esc(book[0])}</a></p>
+    </div>
+  </section>
+
+  <div class="wrap-narrow">
+    <p class="back"><a href="/"><span aria-hidden="true">←</span> 回到首頁</a></p>
+  </div>
+
+</main>
+${footer()}
+<script src="${assetUrl('site.js')}" defer></script>
+</body>
+</html>
+`;
+}
+
 /** 首頁最多列幾篇最新筆記（完整清單在各分類頁） */
 const HOME_LATEST = 3;
 
@@ -566,6 +741,8 @@ ${siteHeader()}
   </section>
 
 ${navStrip()}
+
+${pathDoors()}
 
   <section class="notes">
     <div class="wrap">
@@ -665,7 +842,7 @@ const clinicLinks = () =>
     .map(([t, href]) => `<a href="${escAttr(href)}" target="_blank" rel="noopener noreferrer">${esc(t)}</a>`)
     .join('<br>')}</p>`;
 
-function renderPost(p) {
+function renderPost(p, nextHtml = '') {
   const ogImage = ogImageFor(p.lead);
   const timeMeta =
     `<meta property="article:published_time" content="${escAttr(p.date)}">\n` +
@@ -689,6 +866,7 @@ ${siteHeader()}
     <div class="wrap-narrow">
       <div class="post-body">
 ${p.html}
+${nextHtml}
 ${clinicLinks()}
       </div>
       ${postBack(p)}
@@ -747,10 +925,26 @@ function build() {
   // 最新的在前：先比更新日，再比發布日
   posts.sort((a, b) => (b.updated.localeCompare(a.updated)) || (b.date.localeCompare(a.date)) || b.slug.localeCompare(a.slug));
 
+  const bySlug = new Map(posts.map((p) => [p.slug, p]));
+  const pathIdx = buildPathIndex();
+  for (const pt of SITE.paths) {
+    for (const st of pt.stages) for (const slug of st.posts) if (!bySlug.has(slug)) console.warn(`  ⚠ 路徑「${pt.slug}」指到不存在的文章 ${slug}`);
+  }
+  for (const f of SITE.feedback) {
+    if (!SITE.paths.some((pt) => pt.slug === f.path)) console.warn(`  ⚠ 回饋素材的 path「${f.path}」不在 SITE.paths 裡`);
+    if (f.type !== 'youtube' && !existsSync(join(ASSETS_DIR, f.src || ''))) console.warn(`  ⚠ 回饋素材找不到 assets/${f.src}`);
+  }
+
   for (const p of posts) {
     const dir = join(OUT_DIR, p.slug);
     mkdirSync(dir, { recursive: true });
-    writeFileSync(join(dir, 'index.html'), renderPost(p), 'utf8');
+    writeFileSync(join(dir, 'index.html'), renderPost(p, nextStep(p, pathIdx, bySlug)), 'utf8');
+  }
+
+  for (const pt of SITE.paths) {
+    const dir = join(OUT_DIR, 'start', pt.slug);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'index.html'), renderPath(pt, bySlug), 'utf8');
   }
 
   // 分類頁。slug 都是英文短字，跟文章的日期開頭 slug 不會撞名
@@ -783,6 +977,7 @@ function build() {
       const own = posts.filter((p) => p.category === s.slug);
       return { loc: `/${s.slug}`, lastmod: own.length ? own[0].updated : siteLastmod };
     }),
+    ...SITE.paths.map((pt) => ({ loc: `/start/${pt.slug}`, lastmod: siteLastmod })),
     ...posts.map((p) => ({ loc: `/${p.slug}`, lastmod: p.updated })),
   ];
   const urls = entries
