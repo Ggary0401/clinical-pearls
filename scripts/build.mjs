@@ -54,29 +54,29 @@ const SITE = {
   paths: [
     {
       slug: 'anal', zh: '肛門不舒服', en: 'ANAL',
-      intro: '痛、腫、癢、有東西掉出來——先認出是哪一種，再決定要不要處理。',
+      intro: '痛、腫、癢、有東西掉出來 — 健康比害羞更重要',
       stages: [
-        { zh: '認出自己', posts: ['20180822-anal-pain-causes', '20190702-pile-vs-fissure', '20180819-anal-abscess'] },
-        { zh: '不再害怕', posts: ['20181107-hemorrhoid-no-surgery', '20181122-painless-banding', '20190804-hemorrhoid-guideline'] },
-        { zh: '值得信任', posts: ['20190424-vienna-training-2019', '20200626-ligasure-device', '20250908-het-bipolar-therapy-2025', '20190108-exparel-pain-control', '20181028-anal-fissure-botox'] },
+        { zh: '真的是痔瘡在痛嗎', posts: ['20180822-anal-pain-causes', '20190702-pile-vs-fissure', '20180819-anal-abscess'] },
+        { zh: '該怎麼做', posts: ['20181107-hemorrhoid-no-surgery', '20181122-painless-banding', '20190804-hemorrhoid-guideline'] },
+        { zh: '患者回饋', posts: ['20190424-vienna-training-2019', '20200626-ligasure-device', '20250908-het-bipolar-therapy-2025', '20190108-exparel-pain-control', '20181028-anal-fissure-botox'] },
       ],
     },
     {
       slug: 'bleeding', zh: '大便有血', en: 'BLEEDING',
-      intro: '血便不一定是痔瘡。看懂血的顏色與樣子，知道什麼時候不能拖。',
+      intro: '滴血、擦到血、馬桶一片紅 — 看見血，就該查清楚',
       stages: [
-        { zh: '認出自己', posts: ['20180630-blood-in-stool', '20181228-reading-rectal-bleeding'] },
-        { zh: '不再害怕', posts: ['20180716-young-colorectal-cancer', '20200723-just-treat-it-as-piles', '20210423-fobt-negative-adenoma', '20190715-polyp-truth', '20180703-is-endoscopy-painful', '20230603-painless-endoscopy-case-01'] },
-        { zh: '值得信任', posts: ['20190326-23f-sigmoid-cancer', '20191224-30f-low-rectal-cancer', '20210413-45m-sigmoid-cancer', '20250627-59m-rectal-adenocarcinoma'] },
+        { zh: '真的是痔瘡在流血嗎', posts: ['20180630-blood-in-stool', '20181228-reading-rectal-bleeding'] },
+        { zh: '該怎麼做', posts: ['20180716-young-colorectal-cancer', '20200723-just-treat-it-as-piles', '20210423-fobt-negative-adenoma', '20190715-polyp-truth', '20180703-is-endoscopy-painful', '20230603-painless-endoscopy-case-01'] },
+        { zh: '患者回饋', posts: ['20190326-23f-sigmoid-cancer', '20191224-30f-low-rectal-cancer', '20210413-45m-sigmoid-cancer', '20250627-59m-rectal-adenocarcinoma'] },
       ],
     },
     {
       slug: 'stomach', zh: '胃腸不適', en: 'DIGESTIVE',
-      intro: '胃痛、脹氣、排便習慣改變——長期反覆，值得查清楚原因。',
+      intro: '胃痛、脹氣、反覆拉肚子或便秘 — 老毛病，也值得查清楚',
       stages: [
-        { zh: '認出自己', posts: ['20201026-more-than-stomach-pain', '20190225-daily-bowel-syndrome', '20180907-ibs-diagnosis-treatment'] },
-        { zh: '不再害怕', posts: ['20201122-gastroscopy-without-symptoms', '20190308-eight-years-stomach-pain', '20180703-is-endoscopy-painful'] },
-        { zh: '值得信任', posts: ['20200829-ulcerative-colitis', '20220811-fodmap-food-choice'] },
+        { zh: '真的只是胃不好嗎', posts: ['20201026-more-than-stomach-pain', '20190225-daily-bowel-syndrome', '20180907-ibs-diagnosis-treatment'] },
+        { zh: '該怎麼做', posts: ['20201122-gastroscopy-without-symptoms', '20190308-eight-years-stomach-pain', '20180703-is-endoscopy-painful'] },
+        { zh: '患者回饋', posts: ['20200829-ulcerative-colitis', '20220811-fodmap-food-choice'] },
       ],
     },
   ],
