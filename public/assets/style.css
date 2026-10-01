@@ -725,7 +725,7 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .pill-lg { display: inline-block; font-size: .9375rem; padding: .75rem 2rem; }
 
 /* 文章結尾「下一步」 */
-.next-step { margin: 3rem 0 0; padding: 1.5rem; background: var(--blue-tint); border-left: 3px solid var(--navy); border-radius: var(--radius); }
+.next-step { margin: 3rem 0 2.5rem; padding: 1.5rem; background: var(--blue-tint); border-left: 3px solid var(--navy); border-radius: var(--radius); }
 .next-kicker { margin: 0 0 .5rem; font-size: .75rem; letter-spacing: .16em; color: var(--muted); }
 .next-link { display: block; color: inherit; text-decoration: none; }
 .next-title { display: block; font-size: 1.1875rem; font-weight: 500; line-height: 1.6; color: var(--navy); }
