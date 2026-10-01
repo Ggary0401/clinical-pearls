@@ -85,7 +85,11 @@ const SITE = {
   //   image:   { path, type: 'image',   src: 'feedback-anal-01.jpg', alt: '圖片文字說明', caption: '（選填）' }
   //   youtube: { path, type: 'youtube', id: 'YouTube影片ID', caption: '（選填）' }
   // 圖檔放 assets/（不能有子資料夾），檔名建議 feedback-開頭。清單是空的就不會顯示這一區。
-  feedback: [],
+  feedback: [
+    { path: 'anal', type: 'youtube', id: 'kYsLdl4Abcc' },
+    { path: 'anal', type: 'youtube', id: 'aleUriK8u-Q' },
+    { path: 'anal', type: 'youtube', id: 'APc4kvTMXLE' },
+  ],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
     education: [
