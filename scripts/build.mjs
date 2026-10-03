@@ -32,6 +32,8 @@ const SITE = {
   redirects: [
     ['/20260912-introduction', '/20260912-sigmoid-colon-polyp'],
     ['/20260905-writing-format', '/20260905-two-worlds'],
+    ['/start/bleeding', '/start/bowel'],
+    ['/start/stomach', '/start/bowel'],
   ],
   // 首頁那排分類入口，順序就是顯示順序。每個分類會產生一個 /<slug> 頁面。
   //   kind: 'about' -> 放學經歷那一區；其餘 -> 列出 category 指到這個 slug 的文章
@@ -58,29 +60,22 @@ const SITE = {
       stages: [
         { zh: '真的是痔瘡在痛嗎', posts: ['20180822-anal-pain-causes', '20190702-pile-vs-fissure', '20180819-anal-abscess'] },
         { zh: '該怎麼做', posts: ['20181107-hemorrhoid-no-surgery', '20181122-painless-banding', '20190804-hemorrhoid-guideline'] },
-        { zh: '患者回饋', posts: ['20190424-vienna-training-2019', '20200626-ligasure-device', '20250908-het-bipolar-therapy-2025', '20190108-exparel-pain-control', '20181028-anal-fissure-botox'] },
+        { zh: '治療方式', posts: ['20190424-vienna-training-2019', '20200626-ligasure-device', '20250908-het-bipolar-therapy-2025', '20190108-exparel-pain-control', '20181028-anal-fissure-botox'] },
+        { zh: '聽說痔瘡治療很痛，看患者怎麼說', posts: [], feedback: true },
       ],
     },
     {
-      slug: 'bleeding', zh: '大便有血', en: 'BLEEDING',
-      intro: '滴血、擦到血、馬桶一片紅 — 看見血，就該查清楚',
+      slug: 'bowel', zh: '大便有血、排便不順', en: 'BOWEL',
+      intro: '滴血、擦到血、便秘拉肚子、肚子脹痛 — 反覆不舒服，就該查清楚',
       stages: [
-        { zh: '真的是痔瘡在流血嗎', posts: ['20180630-blood-in-stool', '20181228-reading-rectal-bleeding'] },
-        { zh: '該怎麼做', posts: ['20180716-young-colorectal-cancer', '20200723-just-treat-it-as-piles', '20210423-fobt-negative-adenoma', '20190715-polyp-truth', '20180703-is-endoscopy-painful', '20230603-painless-endoscopy-case-01'] },
-        { zh: '患者回饋', posts: ['20190326-23f-sigmoid-cancer', '20191224-30f-low-rectal-cancer', '20210413-45m-sigmoid-cancer', '20250627-59m-rectal-adenocarcinoma'] },
-      ],
-    },
-    {
-      slug: 'stomach', zh: '胃腸不適', en: 'DIGESTIVE',
-      intro: '胃痛、脹氣、反覆拉肚子或便秘 — 老毛病，也值得查清楚',
-      stages: [
-        { zh: '真的只是胃不好嗎', posts: ['20201026-more-than-stomach-pain', '20190225-daily-bowel-syndrome', '20180907-ibs-diagnosis-treatment'] },
-        { zh: '該怎麼做', posts: ['20201122-gastroscopy-without-symptoms', '20190308-eight-years-stomach-pain', '20180703-is-endoscopy-painful'] },
-        { zh: '患者回饋', posts: ['20200829-ulcerative-colitis', '20220811-fodmap-food-choice'] },
+        { zh: '真的只是痔瘡或腸胃不好嗎', posts: ['20180630-blood-in-stool', '20181228-reading-rectal-bleeding', '20201026-more-than-stomach-pain', '20190225-daily-bowel-syndrome', '20180907-ibs-diagnosis-treatment'] },
+        { zh: '該怎麼做', posts: ['20180716-young-colorectal-cancer', '20200723-just-treat-it-as-piles', '20210423-fobt-negative-adenoma', '20190715-polyp-truth', '20180703-is-endoscopy-painful', '20230603-painless-endoscopy-case-01', '20201122-gastroscopy-without-symptoms', '20190308-eight-years-stomach-pain'] },
+        { zh: '診間故事', posts: ['20190326-23f-sigmoid-cancer', '20191224-30f-low-rectal-cancer', '20210413-45m-sigmoid-cancer', '20250627-59m-rectal-adenocarcinoma', '20200829-ulcerative-colitis', '20220811-fodmap-food-choice'] },
+        { zh: '聽說腸胃鏡很痛，看患者怎麼說', posts: [], feedback: true },
       ],
     },
   ],
-  // 病人回饋素材（手寫回饋單、影片），顯示在各路徑頁「值得信任」階段之後。
+  // 病人回饋素材（手寫回饋單、影片），顯示在各路徑頁標有 feedback: true 的階段（階段 04「看患者怎麼說」）底下。
   //   path: 對應 paths[].slug
   //   image:   { path, type: 'image',   src: 'feedback-anal-01.jpg', alt: '圖片文字說明', caption: '（選填）' }
   //   youtube: { path, type: 'youtube', id: 'YouTube影片ID', caption: '（選填）' }
@@ -89,6 +84,16 @@ const SITE = {
     { path: 'anal', type: 'youtube', id: 'kYsLdl4Abcc' },
     { path: 'anal', type: 'youtube', id: 'aleUriK8u-Q' },
     { path: 'anal', type: 'youtube', id: 'APc4kvTMXLE' },
+    { path: 'anal', type: 'image', src: 'feedback-hemorrhoid-01.jpg', alt: '痔瘡手術滿意度調查表，患者手寫回饋' },
+    { path: 'anal', type: 'image', src: 'feedback-hemorrhoid-02.jpg', alt: '痔瘡手術滿意度調查表，患者手寫回饋' },
+    { path: 'anal', type: 'image', src: 'feedback-hemorrhoid-03.jpg', alt: '痔瘡手術滿意度調查表，患者手寫回饋' },
+    { path: 'anal', type: 'image', src: 'feedback-hemorrhoid-04.jpg', alt: '痔瘡手術滿意度調查表，患者手寫回饋' },
+    { path: 'anal', type: 'image', src: 'feedback-hemorrhoid-05.jpg', alt: '痔瘡手術滿意度調查表，患者手寫回饋' },
+    { path: 'bowel', type: 'image', src: 'feedback-endoscopy-01.jpg', alt: '胃鏡大腸鏡滿意度調查表，患者手寫回饋' },
+    { path: 'bowel', type: 'image', src: 'feedback-endoscopy-02.jpg', alt: '胃鏡大腸鏡滿意度調查表，患者手寫回饋' },
+    { path: 'bowel', type: 'image', src: 'feedback-endoscopy-03.jpg', alt: '胃鏡大腸鏡滿意度調查表，患者手寫回饋' },
+    { path: 'bowel', type: 'image', src: 'feedback-endoscopy-04.jpg', alt: '胃鏡大腸鏡滿意度調查表，患者手寫回饋' },
+    { path: 'bowel', type: 'image', src: 'feedback-endoscopy-05.jpg', alt: '胃鏡大腸鏡滿意度調查表，患者手寫回饋' },
   ],
   // 學經歷（首頁「關於我」區塊。要增修直接改這兩個陣列即可）
   cv: {
@@ -626,7 +631,7 @@ function nextStep(p, pathIdx, bySlug) {
           <span class="next-title">如果你也有類似的情形，歡迎來門診聊聊</span>
           <span class="next-more">${esc(book[0])} <span aria-hidden="true">→</span></span>
         </a>
-        <p class="next-all"><a href="/start/${escAttr(hit.path.slug)}">回顧「${esc(hit.path.zh)}」完整路徑</a></p>
+        <p class="next-all"><a href="/start/${escAttr(hit.path.slug)}#feedback">看患者怎麼說</a><span aria-hidden="true"> · </span><a href="/start/${escAttr(hit.path.slug)}">回顧「${esc(hit.path.zh)}」完整路徑</a></p>
       </aside>`;
 }
 
@@ -651,8 +656,8 @@ ${SITE.paths
   </section>`;
 }
 
-/** 病人回饋區（素材清單在 SITE.feedback；沒有素材就整區不顯示） */
-function feedbackHtml(pathSlug) {
+/** 病人回饋素材（清單在 SITE.feedback）。回傳網格 HTML，沒有素材就回傳空字串。 */
+function feedbackGrid(pathSlug) {
   const items = SITE.feedback.filter((f) => f.path === pathSlug);
   if (!items.length) return '';
   const body = items
@@ -660,17 +665,10 @@ function feedbackHtml(pathSlug) {
       const media = f.type === 'youtube'
         ? videoFacade(f.id)
         : `<img src="${escAttr(assetUrl(f.src))}" alt="${escAttr(f.alt || '')}" loading="lazy">`;
-      return `        <figure class="fb-item">${media}${f.caption ? `<figcaption>${esc(f.caption)}</figcaption>` : ''}</figure>`;
+      return `          <figure class="fb-item">${media}${f.caption ? `<figcaption>${esc(f.caption)}</figcaption>` : ''}</figure>`;
     })
     .join('\n');
-  return `  <section class="feedback">
-    <div class="wrap">
-      ${sectionTitle('FEEDBACK', '病人的回饋')}
-      <div class="fb-grid">
-${body}
-      </div>
-    </div>
-  </section>`;
+  return `        <div class="fb-grid">\n${body}\n        </div>`;
 }
 
 /** 路徑頁 /start/<slug>：依階段排好文章，最後接回饋與掛號 */
@@ -679,11 +677,14 @@ function renderPath(path, bySlug) {
   const stages = path.stages
     .map((st, si) => {
       const posts = st.posts.map((s) => bySlug.get(s)).filter(Boolean);
-      return `      <div class="stage">
+      const fb = st.feedback ? feedbackGrid(path.slug) : '';
+      if (!posts.length && !fb) return '';
+      return `      <div class="stage"${st.feedback ? ' id="feedback"' : ''}>
         <h3 class="stage-title"><span class="stage-no">${String(si + 1).padStart(2, '0')}</span>${esc(st.zh)}</h3>
-        <ol class="stage-list">
+${posts.length ? `        <ol class="stage-list">
 ${posts.map((p) => `          <li><a href="/${escAttr(p.slug)}">${esc(p.title)}</a></li>`).join('\n')}
-        </ol>
+        </ol>` : ''}
+${fb}
       </div>`;
     })
     .join('\n');
@@ -702,8 +703,6 @@ ${navStrip()}
 ${stages}
     </div>
   </section>
-
-${feedbackHtml(path.slug)}
 
   <section class="path-cta">
     <div class="wrap">
