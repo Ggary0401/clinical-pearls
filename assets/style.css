@@ -733,3 +733,19 @@ a { color: var(--navy); text-decoration-thickness: 1px; text-underline-offset: 3
 .next-link:hover .next-more { text-decoration: underline; text-underline-offset: 4px; }
 .next-all { margin: 1rem 0 0; font-size: .8125rem; }
 .next-all a { color: var(--muted); }
+
+/* 手機閱讀字級：內文一律 16px、行高 1.8（比照大象醫師網站手機版）。
+   只動「讀的文字」；標籤、導覽、頁尾等小字不動。 */
+@media (max-width: 47.99rem) {
+  body,
+  .post-body,
+  .post-body th, .post-body td,
+  .card-summary,
+  .cv-list li,
+  .door-intro,
+  .path-intro,
+  .nf-text {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+}
